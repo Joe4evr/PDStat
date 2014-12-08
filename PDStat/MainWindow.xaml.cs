@@ -115,7 +115,7 @@ namespace PDStat
 				//TZ2Chk.IsEnabled = !(diffBox.SelectedItem.ToString() == Difficulty.Easy.ToString());
 			}
 
-			//loadBestAttempt();
+			LoadBestAttempt();
 		}
 
 		private void rankBox_Loaded(object sender, RoutedEventArgs e)
@@ -191,7 +191,7 @@ namespace PDStat
 					db.SaveChanges();
 				}
 
-				//LoadBestAttempt();
+				LoadBestAttempt();
 				ClearScores();
 				IncrementAttempt(ref currentAttempt);
 			}
@@ -289,6 +289,47 @@ namespace PDStat
 			TZ2Chk.IsChecked = false;
 
 			ScoreBox.Text = String.Empty;
+		}
+
+		private void LoadBestAttempt()
+		{
+			using (PDStatContext db = new PDStatContext())
+			{
+				int song = (from s in db.Songs where s.Game == gamesBox.SelectedItem.ToString() && s.Title == songBox.SelectedItem.ToString() select s.Id).First();
+				PdStat stat;
+				try
+				{
+					stat = (from s in db.PDStats where s.Song == song && s.Difficulty == diffBox.SelectedItem.ToString() select s).OrderByDescending(s => s.Score).First();
+					
+					bestCool.Content = stat.Cool;
+					bestGood.Content = stat.Good;
+					bestSafe.Content = stat.Safe;
+					bestBad.Content = stat.Bad;
+					bestAwful.Content = stat.Awful;
+
+					bestCT.Content = stat.ChanceTimeBonus ? "Clear" : "Not clear";
+					bestTZ1.Content = stat.TechZoneBonus1 ? "Clear" : "Not clear";
+					bestTZ2.Content = stat.TechZoneBonus2 ? "Clear" : "Not clear";
+
+					bestScore.Content = stat.Score;
+					bestRank.Content = stat.Rank;
+				}
+				catch (InvalidOperationException)
+				{
+					bestCool.Content = String.Empty;
+					bestGood.Content = String.Empty;
+					bestSafe.Content = String.Empty;
+					bestBad.Content = String.Empty;
+					bestAwful.Content = String.Empty;
+
+					bestCT.Content = String.Empty;
+					bestTZ1.Content = String.Empty;
+					bestTZ2.Content = String.Empty;
+
+					bestScore.Content = String.Empty;
+					bestRank.Content = String.Empty;
+				}
+			}
 		}
 	}
 }

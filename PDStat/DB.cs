@@ -136,11 +136,11 @@ namespace PDStat
 		public DbSet<PdStat> PDStats { get; set; }
 	}
 
-	class DbInitializer : 
+	class DbInitializer
 #if (DEBUG)
-		DropCreateDatabaseAlways<PDStatContext>
+ : DropCreateDatabaseAlways<PDStatContext>
 #else
-		CreateDatabaseIfNotExists<PDStatContext>
+ : CreateDatabaseIfNotExists<PDStatContext>
 #endif
 	{
 		protected override void Seed(PDStatContext context)
