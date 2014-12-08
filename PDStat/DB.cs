@@ -136,11 +136,16 @@ namespace PDStat
 		public DbSet<PdStat> PDStats { get; set; }
 	}
 
-	class DbInitializer : DropCreateDatabaseAlways<PDStatContext>
+	class DbInitializer : 
+#if (DEBUG)
+		DropCreateDatabaseAlways<PDStatContext>
+#else
+		CreateDatabaseIfNotExists<PDStatContext>
+#endif
 	{
 		protected override void Seed(PDStatContext context)
 		{
-			#region
+			#region String literal entries
 			context.Difficulties.Add(new Difficulty() { Id = 0, Name = "Easy" });
 			context.Difficulties.Add(new Difficulty() { Id = 1, Name = "Normal" });
 			context.Difficulties.Add(new Difficulty() { Id = 2, Name = "Hard" });
