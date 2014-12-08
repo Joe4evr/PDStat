@@ -26,9 +26,7 @@ namespace PDStat
 		List<string> games = new List<string>();
 		List<string> songs;
 		List<string> diff;
-		//string connectionString;
-		//string statDB = System.Configuration.ConfigurationManager.ConnectionStrings["statDB"].ConnectionString;
-		//int currentAttempt = 0;
+		int currentAttempt = 0;
 
 		public MainWindow()
 		{
@@ -87,7 +85,7 @@ namespace PDStat
 			diffBox.ItemsSource = diff;
 			if (diffBox.IsEnabled)
 			{
-				//loadBestAttempt();
+				//LoadBestAttempt();
 			}
 			else
 			{
@@ -97,23 +95,23 @@ namespace PDStat
 
 		private void diffBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			CTChk.IsChecked = false;
-			TZ1Chk.IsChecked = false;
-			TZ2Chk.IsChecked = false;
+			//CTChk.IsChecked = false;
+			//TZ1Chk.IsChecked = false;
+			//TZ2Chk.IsChecked = false;
 
 			if (gamesBox.SelectedItem.ToString() != "Project Diva f (Vita)" ||
 				gamesBox.SelectedItem.ToString() != "Project Diva F (PS3)" ||
 				gamesBox.SelectedItem.ToString() != "Project Diva f 2nd (Vita)" ||
 				gamesBox.SelectedItem.ToString() != "Project Diva F 2nd (PS3)")
 			{
-				CTChk.IsEnabled = false;
-				TZ1Chk.IsEnabled = false;
-				TZ2Chk.IsEnabled = false;
+				//CTChk.IsEnabled = false;
+				//TZ1Chk.IsEnabled = false;
+				//TZ2Chk.IsEnabled = false;
 			}
 			else
 			{
-				CTChk.IsEnabled = true;
-				TZ1Chk.IsEnabled = true;
+				//CTChk.IsEnabled = true;
+				//TZ1Chk.IsEnabled = true;
 				//TZ2Chk.IsEnabled = !(diffBox.SelectedItem.ToString() == Difficulty.Easy.ToString());
 			}
 
@@ -130,41 +128,8 @@ namespace PDStat
 					ranks.Add(r.Name);
 				}
 			}
+			ranks.Remove("Unfinished");
 			rankBox.ItemsSource = ranks;
-		}
-
-		private void SubmitBtn_Click(object sender, RoutedEventArgs e)
-		{
-			short cools;
-			short goods;
-			short safes;
-			short bads;
-			short awfuls;
-			int score;
-			if (Int16.TryParse(CoolBox.Text, out cools) && Int16.TryParse(GoodBox.Text, out goods) &&
-				Int16.TryParse(SafeBox.Text, out safes) && Int16.TryParse(BadBox.Text, out bads) &&
-				Int16.TryParse(AwfulBox.Text, out awfuls) && Int32.TryParse(ScoreBox.Text, out score))
-			{
-				InsertStat(gamesBox.SelectedItem.ToString(), new PdStat() { 
-					Title = songBox.SelectedItem.ToString(), Difficulty = diffBox.SelectedItem.ToString(),
-					Date = DateTime.Today, Cool = cools, Good = goods, Safe = safes, Bad = bads, Awful = awfuls,
-					ChanceTimeBonus = CTChk.IsChecked ?? false, TechZoneBonus1 = TZ1Chk.IsChecked ?? false, 
-					TechZoneBonus2 = TZ2Chk.IsChecked ?? false,
-					Score = score, Rank = rankBox.SelectedItem.ToString()
-				});
-
-				ClearScores();
-
-				//IncrementAttempt(ref currentAttempt);
-			}
-		}
-
-		private void ResetBtn_Click(object sender, RoutedEventArgs e)
-		{
-			//InsertStat(gamesBox.SelectedItem.ToString(), songBox.SelectedItem.ToString(), diffBox.SelectedItem.ToString(),
-						//currentAttempt, DateTime.Today, 0, 0, 0, 0, 0, false, false, false, 0, "Unfinished");
-
-			//IncrementAttempt(ref currentAttempt);
 		}
 
 		private void styleBox_Loaded(object sender, RoutedEventArgs e)
@@ -186,6 +151,79 @@ namespace PDStat
 			ChangeStyle();
 		}
 
+		private void attemptCounter_Loaded(object sender, RoutedEventArgs e)
+		{
+			IncrementAttempt(ref currentAttempt);
+		}
+
+
+		private void SubmitBtn_Click(object sender, RoutedEventArgs e)
+		{
+			short cools;
+			short goods;
+			short safes;
+			short bads;
+			short awfuls;
+			int score;
+			if (Int16.TryParse(CoolBox.Text, out cools) && Int16.TryParse(GoodBox.Text, out goods) &&
+				Int16.TryParse(SafeBox.Text, out safes) && Int16.TryParse(BadBox.Text, out bads) &&
+				Int16.TryParse(AwfulBox.Text, out awfuls) && Int32.TryParse(ScoreBox.Text, out score))
+			{
+				using (PDStatContext db = new PDStatContext())
+				{
+					PdStat stat = new PdStat(){
+						Song = (from s in db.Songs where s.Game == gamesBox.SelectedItem.ToString() && s.Title == songBox.SelectedItem.ToString() select s.Id).First(),
+						diff = (from d in db.Difficulties where d.Name == diffBox.SelectedItem.ToString() select d).First(),
+						Attempt = currentAttempt,
+						Date = DateTime.Today.Date,
+						Cool = cools,
+						Good = goods,
+						Safe = safes,
+						Bad = bads,
+						Awful = awfuls,
+						ChanceTimeBonus = CTChk.IsChecked ?? false,
+						TechZoneBonus1 = TZ1Chk.IsChecked ?? false,
+						TechZoneBonus2 = TZ2Chk.IsChecked ?? false,
+						Score = score,
+						r = (from ra in db.Ranks where ra.Name == rankBox.SelectedItem.ToString() select ra).First(),
+					};
+					db.PDStats.Add(stat);
+					db.SaveChanges();
+				}
+
+				//LoadBestAttempt();
+				ClearScores();
+				IncrementAttempt(ref currentAttempt);
+			}
+		}
+
+		private void ResetBtn_Click(object sender, RoutedEventArgs e)
+		{
+			using (PDStatContext db = new PDStatContext())
+			{
+				PdStat stat = new PdStat()
+				{
+					Song = (from s in db.Songs where s.Game == gamesBox.SelectedItem.ToString() && s.Title == songBox.SelectedItem.ToString() select s.Id).First(),
+					diff = (from d in db.Difficulties where d.Name == diffBox.SelectedItem.ToString() select d).First(),
+					Attempt = currentAttempt,
+					Date = DateTime.Today.Date,
+					Cool = 0,
+					Good = 0,
+					Safe = 0,
+					Bad = 0,
+					Awful = 0,
+					ChanceTimeBonus = false,
+					TechZoneBonus1 = false,
+					TechZoneBonus2 = false,
+					Score = 0,
+					r = (from ra in db.Ranks where ra.Name == "Unfinished" select ra).First(),
+				};
+				db.PDStats.Add(stat);
+				db.SaveChanges();
+			}
+
+			IncrementAttempt(ref currentAttempt);
+		}
 
 
 		private void ChangeStyle()
@@ -233,9 +271,9 @@ namespace PDStat
 			}
 		}
 
-		private void IncrementAttempt(ref int currentAttempt)
+		private void IncrementAttempt(ref int attempt)
 		{
-			attemptCounter.Content = String.Format("#{0}", currentAttempt+=1);
+			attemptCounter.Content = String.Format("#{0}", attempt+=1);
 		}
 
 		private void ClearScores()
@@ -251,15 +289,6 @@ namespace PDStat
 			TZ2Chk.IsChecked = false;
 
 			ScoreBox.Text = String.Empty;
-		}
-
-		private void InsertStat(string game, PdStat stat)
-		{
-			using (PDStatContext db = new PDStatContext())
-			{
-				db.PDStats.Add(stat);
-				db.SaveChanges();
-			}
 		}
 	}
 }

@@ -28,18 +28,13 @@ namespace PDStat
 		[Key]
 		[Column(Order = 1)]
 		public int Song { get; set; }
-		
-		[Key]
-		[Column(Order = 2)]
-		[StringLength(150)]
-		public string Title { get; set; }
 
 		[Key]
-		[Column(Order = 3)]
+		[Column(Order = 2)]
 		public string Difficulty { get; set; }
 
 		[Key]
-		[Column(Order = 4)]
+		[Column(Order = 3)]
 		public int Attempt { get; set; }
 
 		[ForeignKey("Song")]

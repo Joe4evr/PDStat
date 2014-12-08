@@ -14,7 +14,7 @@
 		</DockPanel>
 		<Label Content="Best Attempt"    HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,10,0,0" VerticalAlignment="Top" FontSize="24" Width="150"/>
 		<Label Content="Current Attempt" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="455,10,0,0" VerticalAlignment="Top" FontSize="24" Width="185" Grid.ColumnSpan="2"/>
-		<Label x:Name="attemptCounter" Content="#0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="640,10,0,0" VerticalAlignment="Top" FontSize="24" Width="160"/>
+		<Label x:Name="attemptCounter" Content="#0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="640,10,0,0" VerticalAlignment="Top" FontSize="24" Width="160" Loaded="attemptCounter_Loaded"/>
 
 		<Label x:Name="bestCool"  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,52,0,0"  VerticalAlignment="Top" FontSize="24" Width="100"/>
 		<Label x:Name="bestGood"  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,94,0,0"  VerticalAlignment="Top" FontSize="24" Width="100"/>
@@ -38,17 +38,17 @@
 		<Label Content="Score" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="355,388,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
 		<Label Content="Rank"  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="355,430,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
 
-		<TextBox  x:Name="CoolBox"   HorizontalAlignment="Left" Height="32" Margin="512,59,0,0"  VerticalAlignment="Top" Width="75" HorizontalContentAlignment="Right" FontSize="20" UndoLimit="100" VerticalContentAlignment="Center" IsEnabled="False" Grid.ColumnSpan="2"/>
-		<TextBox  x:Name="GoodBox"   HorizontalAlignment="Left" Height="32" Margin="512,101,0,0"  VerticalAlignment="Top" Width="75" HorizontalContentAlignment="Right" FontSize="20" UndoLimit="100" VerticalContentAlignment="Center" IsEnabled="False" Grid.ColumnSpan="2"/>
-		<TextBox  x:Name="SafeBox"   HorizontalAlignment="Left" Height="32" Margin="512,143,0,0" VerticalAlignment="Top" Width="75" HorizontalContentAlignment="Right" FontSize="20" UndoLimit="100" VerticalContentAlignment="Center" IsEnabled="False" Grid.ColumnSpan="2"/>
-		<TextBox  x:Name="BadBox"    HorizontalAlignment="Left" Height="32" Margin="512,185,0,0" VerticalAlignment="Top" Width="75" HorizontalContentAlignment="Right" FontSize="20" UndoLimit="100" VerticalContentAlignment="Center" IsEnabled="False" Grid.ColumnSpan="2"/>
-		<TextBox  x:Name="AwfulBox"  HorizontalAlignment="Left" Height="32" Margin="512,227,0,0" VerticalAlignment="Top" Width="75" HorizontalContentAlignment="Right" FontSize="20" UndoLimit="100" VerticalContentAlignment="Center" IsEnabled="False" Grid.ColumnSpan="2"/>
+		<TextBox  x:Name="CoolBox"   HorizontalAlignment="Left" Height="32" Margin="512,59,0,0"  VerticalAlignment="Top" Width="75" HorizontalContentAlignment="Right" FontSize="20" UndoLimit="100" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
+		<TextBox  x:Name="GoodBox"   HorizontalAlignment="Left" Height="32" Margin="512,101,0,0"  VerticalAlignment="Top" Width="75" HorizontalContentAlignment="Right" FontSize="20" UndoLimit="100" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
+		<TextBox  x:Name="SafeBox"   HorizontalAlignment="Left" Height="32" Margin="512,143,0,0" VerticalAlignment="Top" Width="75" HorizontalContentAlignment="Right" FontSize="20" UndoLimit="100" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
+		<TextBox  x:Name="BadBox"    HorizontalAlignment="Left" Height="32" Margin="512,185,0,0" VerticalAlignment="Top" Width="75" HorizontalContentAlignment="Right" FontSize="20" UndoLimit="100" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
+		<TextBox  x:Name="AwfulBox"  HorizontalAlignment="Left" Height="32" Margin="512,227,0,0" VerticalAlignment="Top" Width="75" HorizontalContentAlignment="Right" FontSize="20" UndoLimit="100" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
 		<CheckBox x:Name="CTChk"     HorizontalAlignment="Left" Height="13" Margin="542,276,0,0" VerticalAlignment="Top" Width="13" Grid.ColumnSpan="2"/>
 		<CheckBox x:Name="TZ1Chk"    HorizontalAlignment="Left" Height="13" Margin="542,318,0,0" VerticalAlignment="Top" Width="13" Grid.ColumnSpan="2"/>
 		<CheckBox x:Name="TZ2Chk"    HorizontalAlignment="Left" Height="13" Margin="542,360,0,0" VerticalAlignment="Top" Width="13" Grid.ColumnSpan="2"/>
-		<TextBox  x:Name="ScoreBox"  HorizontalAlignment="Left" Height="32" Margin="512,395,0,0" VerticalAlignment="Top" Width="75" HorizontalContentAlignment="Right" FontSize="20" UndoLimit="100" VerticalContentAlignment="Center" IsEnabled="False" Grid.ColumnSpan="2"/>
-		<ComboBox x:Name="rankBox"   HorizontalAlignment="Left" Margin="471,443,0,0" VerticalAlignment="Top" Width="150" Loaded="rankBox_Loaded" IsEnabled="False" Grid.ColumnSpan="2"/>
-		<Button   x:Name="SubmitBtn" HorizontalAlignment="Left" Height="25" Margin="512,484,0,0" VerticalAlignment="Top" Width="75" Content="Submit" Click="SubmitBtn_Click" IsEnabled="False" Grid.ColumnSpan="2"/>
+		<TextBox  x:Name="ScoreBox"  HorizontalAlignment="Left" Height="32" Margin="512,395,0,0" VerticalAlignment="Top" Width="75" HorizontalContentAlignment="Right" FontSize="20" UndoLimit="100" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
+		<ComboBox x:Name="rankBox"   HorizontalAlignment="Left" Margin="471,443,0,0" VerticalAlignment="Top" Width="150" Loaded="rankBox_Loaded" Grid.ColumnSpan="2"/>
+		<Button   x:Name="SubmitBtn" HorizontalAlignment="Left" Height="25" Margin="512,484,0,0" VerticalAlignment="Top" Width="75" Content="Submit" Click="SubmitBtn_Click" Grid.ColumnSpan="2"/>
 		<Button   x:Name="ResetBtn"  HorizontalAlignment="Left" Height="25" Margin="680,484,0,0" VerticalAlignment="Top" Width="75" Content="Reset" Click="ResetBtn_Click" IsEnabled="False" Grid.Column="1"/>
 
 	</Grid>
