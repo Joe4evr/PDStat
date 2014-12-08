@@ -34,15 +34,18 @@ namespace PDStat
 		{
 			InitializeComponent();
 
-			using (PDStatContext db = new PDStatContext()) { } //no-op
+			using (PDStatContext db = new PDStatContext()) { } //no-op for initializing
 		}
 
 		private void gamesBox_Loaded(object sender, RoutedEventArgs e)
 		{
-			EnumHelper.EnumToList<Game>().ForEach(delegate(Game g)
+			using (PDStatContext db = new PDStatContext())
 			{
-				games.Add(EnumHelper.GetEnumDescription(g));
-			});
+				foreach (var g in db.Games.OrderBy(g => g.Id).ToList())
+				{
+					games.Add(g.Name);
+				}
+			}
 			gamesBox.ItemsSource = games;
 			gamesBox.SelectedIndex = 0;
 		}
@@ -59,46 +62,14 @@ namespace PDStat
 					diff.Add(d.Name);
 				}
 
-				if (gamesBox.SelectedItem.ToString() == EnumHelper.GetEnumDescription(Game.ProjectDiva1) ||
-					gamesBox.SelectedItem.ToString() == EnumHelper.GetEnumDescription(Game.ProjectDivaDT))
+				if (gamesBox.SelectedItem.ToString() == "Project Diva (1)" ||
+					gamesBox.SelectedItem.ToString() == "Project Diva DT")
 				{
 					diff.Remove("Extreme");
-					foreach (var s in db.Pd1Songs.OrderBy(s => s.Id))
-					{
-						songs.Add(s.Title);
-					}
 				}
-				else if (gamesBox.SelectedItem.ToString() == EnumHelper.GetEnumDescription(Game.ProjectDiva2) ||
-						 gamesBox.SelectedItem.ToString() == EnumHelper.GetEnumDescription(Game.ProjectDivaDT2))
+				foreach (var s in db.Songs.Where(g => g.Game == gamesBox.SelectedItem.ToString()).OrderBy(s => s.Id))
 				{
-					foreach (var s in db.Pd2Songs.OrderBy(s => s.Id))
-					{
-						songs.Add(s.Title);
-					}
-				}
-				else if (gamesBox.SelectedItem.ToString() == EnumHelper.GetEnumDescription(Game.ProjectDivaX) ||
-						 gamesBox.SelectedItem.ToString() == EnumHelper.GetEnumDescription(Game.ProjectDivaDTX))
-				{
-					foreach (var s in db.PdXSongs.OrderBy(s => s.Id))
-					{
-						songs.Add(s.Title);
-					}
-				}
-				else if (gamesBox.SelectedItem.ToString() == EnumHelper.GetEnumDescription(Game.ProjectDivaFVita) ||
-						 gamesBox.SelectedItem.ToString() == EnumHelper.GetEnumDescription(Game.ProjectDivaFPS3))
-				{
-					foreach (var s in db.PdFSongs.OrderBy(s => s.Id))
-					{
-						songs.Add(s.Title);
-					}
-				}
-				else if (gamesBox.SelectedItem.ToString() == EnumHelper.GetEnumDescription(Game.ProjectDivaF2Vita) ||
-						 gamesBox.SelectedItem.ToString() == EnumHelper.GetEnumDescription(Game.ProjectDivaF2PS3))
-				{
-					foreach (var s in db.PdF2Songs.OrderBy(s => s.Id))
-					{
-						songs.Add(s.Title);
-					}
+					songs.Add(s.Title);
 				}
 			}
 			diffBox.ItemsSource = diff;
@@ -130,10 +101,10 @@ namespace PDStat
 			TZ1Chk.IsChecked = false;
 			TZ2Chk.IsChecked = false;
 
-			if (gamesBox.SelectedItem.ToString() != EnumHelper.GetEnumDescription(Game.ProjectDivaFPS3) ||
-				gamesBox.SelectedItem.ToString() != EnumHelper.GetEnumDescription(Game.ProjectDivaFVita) ||
-				gamesBox.SelectedItem.ToString() != EnumHelper.GetEnumDescription(Game.ProjectDivaF2PS3) ||
-				gamesBox.SelectedItem.ToString() != EnumHelper.GetEnumDescription(Game.ProjectDivaF2Vita))
+			if (gamesBox.SelectedItem.ToString() != "Project Diva f (Vita)" ||
+				gamesBox.SelectedItem.ToString() != "Project Diva F (PS3)" ||
+				gamesBox.SelectedItem.ToString() != "Project Diva f 2nd (Vita)" ||
+				gamesBox.SelectedItem.ToString() != "Project Diva F 2nd (PS3)")
 			{
 				CTChk.IsEnabled = false;
 				TZ1Chk.IsEnabled = false;
@@ -174,9 +145,13 @@ namespace PDStat
 				Int16.TryParse(SafeBox.Text, out safes) && Int16.TryParse(BadBox.Text, out bads) &&
 				Int16.TryParse(AwfulBox.Text, out awfuls) && Int32.TryParse(ScoreBox.Text, out score))
 			{
-				//InsertStat(gamesBox.SelectedItem.ToString(), songBox.SelectedItem.ToString(), diffBox.SelectedItem.ToString(),
-							//currentAttempt, DateTime.Today, cools, goods, safes, bads, awfuls,
-							//CTChk.IsChecked, TZ1Chk.IsChecked, TZ2Chk.IsChecked, score, RankBox.SelectedItem.ToString());
+				InsertStat(gamesBox.SelectedItem.ToString(), new PdStat() { 
+					Title = songBox.SelectedItem.ToString(), Difficulty = diffBox.SelectedItem.ToString(),
+					Date = DateTime.Today, Cool = cools, Good = goods, Safe = safes, Bad = bads, Awful = awfuls,
+					ChanceTimeBonus = CTChk.IsChecked ?? false, TechZoneBonus1 = TZ1Chk.IsChecked ?? false, 
+					TechZoneBonus2 = TZ2Chk.IsChecked ?? false,
+					Score = score, Rank = rankBox.SelectedItem.ToString()
+				});
 
 				ClearScores();
 
@@ -219,13 +194,13 @@ namespace PDStat
 			if (selection == EnumHelper.GetEnumDescription(ScoreStyle.Auto))
 			{
 				string game = gamesBox.SelectedItem.ToString();
-				if (game == EnumHelper.GetEnumDescription(Game.ProjectDivaFVita) ||
-					game == EnumHelper.GetEnumDescription(Game.ProjectDivaFPS3))
+				if (game == "Project Diva f (Vita)" ||
+					game == "Project Diva F (PS3)")
 				{
 					selection = EnumHelper.GetEnumDescription(ScoreStyle.EnglishF);
 				}
-				else if (game == EnumHelper.GetEnumDescription(Game.ProjectDivaF2Vita) ||
-						 game == EnumHelper.GetEnumDescription(Game.ProjectDivaF2PS3))
+				else if (game == "Project Diva f 2nd (Vita)" ||
+						 game == "Project Diva F 2nd (PS3)")
 				{
 					selection = EnumHelper.GetEnumDescription(ScoreStyle.EnglishF2);
 				}
@@ -276,6 +251,15 @@ namespace PDStat
 			TZ2Chk.IsChecked = false;
 
 			ScoreBox.Text = String.Empty;
+		}
+
+		private void InsertStat(string game, PdStat stat)
+		{
+			using (PDStatContext db = new PDStatContext())
+			{
+				db.PDStats.Add(stat);
+				db.SaveChanges();
+			}
 		}
 	}
 }
