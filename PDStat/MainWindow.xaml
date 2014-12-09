@@ -1,7 +1,7 @@
 ﻿<Window x:Class="PDStat.MainWindow"
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		Title="PD Stat" Icon="{StaticResource icon}" Height="628" Width="806" ResizeMode="NoResize">
+		Title="PD Stat" Icon="{StaticResource icon}" Height="628" Width="806" ResizeMode="CanMinimize">
 	<Grid Width="800" Height="600">
 		<Grid.Background>
 			<ImageBrush ImageSource="{StaticResource bg}" Opacity="0.2"/>
@@ -25,7 +25,7 @@
 		<Label x:Name="bestTZ1"   HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,304,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
 		<Label x:Name="bestTZ2"   HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,346,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
 		<Label x:Name="bestScore" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,388,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
-		<Label x:Name="bestRank"  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,430,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
+		<Label x:Name="bestRank"  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,430,0,0" VerticalAlignment="Top" FontSize="24" Width="145" Height="9"/>
 
 		<Label Content="COOL"  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="355,52,0,0"  VerticalAlignment="Top" FontSize="24" Width="100"/>
 		<Label x:Name="goodLabel" Content=""  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="355,94,0,0"  VerticalAlignment="Top" FontSize="24" Width="100"/>
@@ -42,7 +42,7 @@
 		<TextBox  x:Name="GoodBox"   HorizontalAlignment="Left" Height="32" Margin="512,101,0,0"  VerticalAlignment="Top" Width="75" HorizontalContentAlignment="Right" FontSize="20" UndoLimit="100" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
 		<TextBox  x:Name="SafeBox"   HorizontalAlignment="Left" Height="32" Margin="512,143,0,0" VerticalAlignment="Top" Width="75" HorizontalContentAlignment="Right" FontSize="20" UndoLimit="100" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
 		<TextBox  x:Name="BadBox"    HorizontalAlignment="Left" Height="32" Margin="512,185,0,0" VerticalAlignment="Top" Width="75" HorizontalContentAlignment="Right" FontSize="20" UndoLimit="100" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
-		<TextBox  x:Name="AwfulBox"  HorizontalAlignment="Left" Height="32" Margin="512,227,0,0" VerticalAlignment="Top" Width="75" HorizontalContentAlignment="Right" FontSize="20" UndoLimit="100" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
+		<TextBox  x:Name="AwfulBox"  HorizontalAlignment="Left" Height="32" Margin="512,227,0,0" VerticalAlignment="Top" Width="75" HorizontalContentAlignment="Right" FontSize="20" UndoLimit="100" VerticalContentAlignment="Center" Grid.ColumnSpan="2" TextChanged="AwfulBox_TextChanged"/>
 		<CheckBox x:Name="CTChk"     HorizontalAlignment="Left" Height="13" Margin="542,276,0,0" VerticalAlignment="Top" Width="13" Grid.ColumnSpan="2"/>
 		<CheckBox x:Name="TZ1Chk"    HorizontalAlignment="Left" Height="13" Margin="542,318,0,0" VerticalAlignment="Top" Width="13" Grid.ColumnSpan="2"/>
 		<CheckBox x:Name="TZ2Chk"    HorizontalAlignment="Left" Height="13" Margin="542,360,0,0" VerticalAlignment="Top" Width="13" Grid.ColumnSpan="2"/>

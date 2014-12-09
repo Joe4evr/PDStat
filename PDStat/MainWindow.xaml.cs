@@ -222,6 +222,23 @@ namespace PDStat
 			IncrementAttempt(ref currentAttempt);
 		}
 
+		private void AwfulBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			int g;
+			int c;
+			if (AwfulBox.Text == "0" && BadBox.Text == "0" && SafeBox.Text == "0" &&
+				Int32.TryParse(GoodBox.Text, out g) && g > 0 && Int32.TryParse(CoolBox.Text, out c) && c > 0)
+			{
+				if (IsOfFFamily(gamesBox.SelectedItem.ToString()))
+				{
+					CTChk.IsChecked = true;
+					TZ1Chk.IsChecked = true;
+					TZ2Chk.IsChecked = true;
+				}
+				rankBox.SelectedItem = "Perfect";
+			}
+		}
+
 
 		private void ChangeStyle()
 		{
