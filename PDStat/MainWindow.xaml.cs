@@ -319,6 +319,9 @@ namespace PDStat
 						}
 						bestScore.Content = stat.Score;
 						bestRank.Content = stat.Rank;
+
+						currentAttempt = (from s in db.PDStats where s.Song == song && s.Difficulty == diffBox.SelectedItem.ToString() select s).OrderByDescending(s => s.Attempt).First().Attempt;
+						IncrementAttempt(ref currentAttempt);
 					}
 					catch (InvalidOperationException)
 					{
@@ -334,6 +337,9 @@ namespace PDStat
 
 						bestScore.Content = String.Empty;
 						bestRank.Content = String.Empty;
+
+						currentAttempt = 0;
+						IncrementAttempt(ref currentAttempt);
 					}
 				}
 			}
