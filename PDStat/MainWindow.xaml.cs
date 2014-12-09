@@ -74,10 +74,10 @@ namespace PDStat
 			songBox.ItemsSource = songs;
 			songBox.IsEnabled = true;
 
-			//if (styleBox.SelectedItem.ToString() == "Auto")
-			//{
-			//	ChangeStyle();
-			//}
+			if (styleBox.SelectedItem != null && styleBox.SelectedItem.ToString() == "Auto")
+			{
+				ChangeStyle();
+			}
 		}
 
 		private void songBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -85,7 +85,7 @@ namespace PDStat
 			diffBox.ItemsSource = diff;
 			if (diffBox.IsEnabled)
 			{
-				//LoadBestAttempt();
+				LoadBestAttempt();
 			}
 			else
 			{
@@ -95,24 +95,21 @@ namespace PDStat
 
 		private void diffBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			//CTChk.IsChecked = false;
-			//TZ1Chk.IsChecked = false;
-			//TZ2Chk.IsChecked = false;
+			CTChk.IsChecked = false;
+			TZ1Chk.IsChecked = false;
+			TZ2Chk.IsChecked = false;
 
-			if (gamesBox.SelectedItem.ToString() != "Project Diva f (Vita)" ||
-				gamesBox.SelectedItem.ToString() != "Project Diva F (PS3)" ||
-				gamesBox.SelectedItem.ToString() != "Project Diva f 2nd (Vita)" ||
-				gamesBox.SelectedItem.ToString() != "Project Diva F 2nd (PS3)")
+			if (IsOfFFamily(gamesBox.SelectedItem.ToString()))
 			{
-				//CTChk.IsEnabled = false;
-				//TZ1Chk.IsEnabled = false;
-				//TZ2Chk.IsEnabled = false;
+				CTChk.IsEnabled = true;
+				TZ1Chk.IsEnabled = true;
+				TZ2Chk.IsEnabled = !(diffBox.SelectedItem.ToString() == "Easy");
 			}
 			else
 			{
-				//CTChk.IsEnabled = true;
-				//TZ1Chk.IsEnabled = true;
-				//TZ2Chk.IsEnabled = !(diffBox.SelectedItem.ToString() == Difficulty.Easy.ToString());
+				CTChk.IsEnabled = false;
+				TZ1Chk.IsEnabled = false;
+				TZ2Chk.IsEnabled = false;
 			}
 
 			LoadBestAttempt();
@@ -164,7 +161,7 @@ namespace PDStat
 			short safes;
 			short bads;
 			short awfuls;
-			int score;
+			int score; //This can be nicely refactored only once C# 6 is out =(
 			if (Int16.TryParse(CoolBox.Text, out cools) && Int16.TryParse(GoodBox.Text, out goods) &&
 				Int16.TryParse(SafeBox.Text, out safes) && Int16.TryParse(BadBox.Text, out bads) &&
 				Int16.TryParse(AwfulBox.Text, out awfuls) && Int32.TryParse(ScoreBox.Text, out score))
@@ -253,7 +250,6 @@ namespace PDStat
 				goodLabel.Content = "GOOD";
 				badLabel.Content = "BAD";
 				awfulLabel.Content = "AWFUL";
-					
 
 			}
 			else if (selection == EnumHelper.GetEnumDescription(ScoreStyle.EnglishF2))
@@ -295,41 +291,58 @@ namespace PDStat
 		{
 			using (PDStatContext db = new PDStatContext())
 			{
-				int song = (from s in db.Songs where s.Game == gamesBox.SelectedItem.ToString() && s.Title == songBox.SelectedItem.ToString() select s.Id).First();
-				PdStat stat;
-				try
+				if (songBox.SelectedItem != null)
 				{
-					stat = (from s in db.PDStats where s.Song == song && s.Difficulty == diffBox.SelectedItem.ToString() select s).OrderByDescending(s => s.Score).First();
+					int song = (from s in db.Songs where s.Game == gamesBox.SelectedItem.ToString() && s.Title == songBox.SelectedItem.ToString() select s.Id).First();
+					PdStat stat;
+					try
+					{
+						stat = (from s in db.PDStats where s.Song == song && s.Difficulty == diffBox.SelectedItem.ToString() select s).OrderByDescending(s => s.Score).First();
 					
-					bestCool.Content = stat.Cool;
-					bestGood.Content = stat.Good;
-					bestSafe.Content = stat.Safe;
-					bestBad.Content = stat.Bad;
-					bestAwful.Content = stat.Awful;
+						bestCool.Content = stat.Cool;
+						bestGood.Content = stat.Good;
+						bestSafe.Content = stat.Safe;
+						bestBad.Content = stat.Bad;
+						bestAwful.Content = stat.Awful;
 
-					bestCT.Content = stat.ChanceTimeBonus ? "Clear" : "Not clear";
-					bestTZ1.Content = stat.TechZoneBonus1 ? "Clear" : "Not clear";
-					bestTZ2.Content = stat.TechZoneBonus2 ? "Clear" : "Not clear";
+						if (IsOfFFamily(gamesBox.SelectedItem.ToString()))
+						{
+							bestCT.Content = stat.ChanceTimeBonus ? "Clear" : "Not clear";
+							bestTZ1.Content = stat.TechZoneBonus1 ? "Clear" : "Not clear";
+							bestTZ2.Content = diffBox.SelectedItem.ToString() == "Easy" ? String.Empty : (stat.TechZoneBonus2 ? "Clear" : "Not clear");
+						}
+						else
+						{
+							bestCT.Content = String.Empty;
+							bestTZ1.Content = String.Empty;
+							bestTZ2.Content = String.Empty;
+						}
+						bestScore.Content = stat.Score;
+						bestRank.Content = stat.Rank;
+					}
+					catch (InvalidOperationException)
+					{
+						bestCool.Content = String.Empty;
+						bestGood.Content = String.Empty;
+						bestSafe.Content = String.Empty;
+						bestBad.Content = String.Empty;
+						bestAwful.Content = String.Empty;
 
-					bestScore.Content = stat.Score;
-					bestRank.Content = stat.Rank;
-				}
-				catch (InvalidOperationException)
-				{
-					bestCool.Content = String.Empty;
-					bestGood.Content = String.Empty;
-					bestSafe.Content = String.Empty;
-					bestBad.Content = String.Empty;
-					bestAwful.Content = String.Empty;
+						bestCT.Content = String.Empty;
+						bestTZ1.Content = String.Empty;
+						bestTZ2.Content = String.Empty;
 
-					bestCT.Content = String.Empty;
-					bestTZ1.Content = String.Empty;
-					bestTZ2.Content = String.Empty;
-
-					bestScore.Content = String.Empty;
-					bestRank.Content = String.Empty;
+						bestScore.Content = String.Empty;
+						bestRank.Content = String.Empty;
+					}
 				}
 			}
+		}
+
+		private bool IsOfFFamily(string game)
+		{
+			return (game == "Project Diva f (Vita)" || game == "Project Diva F (PS3)" ||
+					game == "Project Diva f 2nd (Vita)" || game == "Project Diva F 2nd (PS3)");
 		}
 	}
 }
