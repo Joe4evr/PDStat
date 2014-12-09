@@ -190,7 +190,6 @@ namespace PDStat
 
 				LoadBestAttempt();
 				ClearScores();
-				IncrementAttempt(ref currentAttempt);
 			}
 		}
 
