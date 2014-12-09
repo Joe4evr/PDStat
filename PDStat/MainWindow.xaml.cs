@@ -238,6 +238,13 @@ namespace PDStat
 			}
 		}
 
+		private void debugLabel_Loaded(object sender, RoutedEventArgs e)
+		{
+#if (DEBUG)
+			debugLabel.Content = "Debug";
+#endif
+		}
+
 
 		private void ChangeStyle()
 		{

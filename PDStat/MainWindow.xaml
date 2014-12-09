@@ -11,21 +11,22 @@
 			<ComboBox x:Name="songBox"  VerticalAlignment="Top" Width="160" HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,20,0,0" IsEnabled="False" SelectionChanged="songBox_SelectionChanged"/>
 			<ComboBox x:Name="diffBox"  VerticalAlignment="Top" Width="160" HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,20,0,0" IsEnabled="False" SelectionChanged="diffBox_SelectionChanged"/>
 			<ComboBox x:Name="styleBox" VerticalAlignment="Top" Width="170" HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,300,0,0" Background="{x:Null}" BorderBrush="Black" FontSize="16" FontFamily="Lucida Console" Loaded="styleBox_Loaded" SelectionChanged="styleBox_SelectionChanged"/>
+			<Label x:Name="debugLabel" Content="" Height="17" VerticalAlignment="Bottom" Width="56" HorizontalAlignment="Left" FontSize="10" VerticalContentAlignment="Bottom" Padding="2,0,0,2" Loaded="debugLabel_Loaded" Margin="0,0,0,9"/>
 		</DockPanel>
 		<Label Content="Best Attempt"    HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,10,0,0" VerticalAlignment="Top" FontSize="24" Width="150"/>
 		<Label Content="Current Attempt" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="455,10,0,0" VerticalAlignment="Top" FontSize="24" Width="185" Grid.ColumnSpan="2"/>
 		<Label x:Name="attemptCounter" Content="#0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="640,10,0,0" VerticalAlignment="Top" FontSize="24" Width="160" Loaded="attemptCounter_Loaded"/>
 
-		<Label x:Name="bestCool"  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,52,0,0"  VerticalAlignment="Top" FontSize="24" Width="100"/>
-		<Label x:Name="bestGood"  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,94,0,0"  VerticalAlignment="Top" FontSize="24" Width="100"/>
-		<Label x:Name="bestSafe"  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,136,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
-		<Label x:Name="bestBad"   HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,178,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
-		<Label x:Name="bestAwful" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,220,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
-		<Label x:Name="bestCT"    HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,262,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
-		<Label x:Name="bestTZ1"   HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,304,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
-		<Label x:Name="bestTZ2"   HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,346,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
-		<Label x:Name="bestScore" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,388,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
-		<Label x:Name="bestRank"  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,430,0,0" VerticalAlignment="Top" FontSize="24" Width="145" Height="9"/>
+		<Label x:Name="bestCool"  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,59,0,0"  VerticalAlignment="Top" FontSize="24" Width="100"/>
+		<Label x:Name="bestGood"  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,101,0,0"  VerticalAlignment="Top" FontSize="24" Width="100"/>
+		<Label x:Name="bestSafe"  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,143,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
+		<Label x:Name="bestBad"   HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,185,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
+		<Label x:Name="bestAwful" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,227,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
+		<Label x:Name="bestCT"    HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,263,0,0" VerticalAlignment="Top" FontSize="24" Width="145"/>
+		<Label x:Name="bestTZ1"   HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,305,0,0" VerticalAlignment="Top" FontSize="24" Width="145"/>
+		<Label x:Name="bestTZ2"   HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,347,0,0" VerticalAlignment="Top" FontSize="24" Width="145"/>
+		<Label x:Name="bestScore" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,382,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
+		<Label x:Name="bestRank"  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,430,0,0" VerticalAlignment="Top" FontSize="24" Width="145"/>
 
 		<Label Content="COOL"  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="355,52,0,0"  VerticalAlignment="Top" FontSize="24" Width="100"/>
 		<Label x:Name="goodLabel" Content=""  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="355,94,0,0"  VerticalAlignment="Top" FontSize="24" Width="100"/>
