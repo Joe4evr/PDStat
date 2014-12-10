@@ -59,5 +59,12 @@ namespace PDStat
 			else
 				return value.ToString();
 		}
+
+		public static bool IsOfFFamily(string game)
+		{
+			return (game == "Project Diva f (Vita)" || game == "Project Diva F (PS3)" ||
+					game == "Project Diva f 2nd (Vita)" || game == "Project Diva F 2nd (PS3)");
+		}
+
 	}
 }

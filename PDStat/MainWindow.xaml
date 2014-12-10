@@ -22,11 +22,11 @@
 		<Label x:Name="bestSafe"  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,143,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
 		<Label x:Name="bestBad"   HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,185,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
 		<Label x:Name="bestAwful" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,227,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
-		<Label x:Name="bestCT"    HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,263,0,0" VerticalAlignment="Top" FontSize="24" Width="145"/>
-		<Label x:Name="bestTZ1"   HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,305,0,0" VerticalAlignment="Top" FontSize="24" Width="145"/>
-		<Label x:Name="bestTZ2"   HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,347,0,0" VerticalAlignment="Top" FontSize="24" Width="145"/>
-		<Label x:Name="bestScore" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,382,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
-		<Label x:Name="bestRank"  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,430,0,0" VerticalAlignment="Top" FontSize="24" Width="145"/>
+		<Label x:Name="bestCT"    HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,262,0,0" VerticalAlignment="Top" FontSize="24" Width="145"/>
+		<Label x:Name="bestTZ1"   HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,304,0,0" VerticalAlignment="Top" FontSize="24" Width="145"/>
+		<Label x:Name="bestTZ2"   HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,346,0,0" VerticalAlignment="Top" FontSize="24" Width="145"/>
+		<Label x:Name="bestScore" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,395,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
+		<Label x:Name="bestRank"  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,443,0,0" VerticalAlignment="Top" FontSize="24" Width="145"/>
 
 		<Label Content="COOL"  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="355,52,0,0"  VerticalAlignment="Top" FontSize="24" Width="100"/>
 		<Label x:Name="goodLabel" Content=""  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="355,94,0,0"  VerticalAlignment="Top" FontSize="24" Width="100"/>

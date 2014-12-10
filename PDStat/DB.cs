@@ -140,10 +140,19 @@ namespace PDStat
 				PdStat stat = (PdStat)entityEntry.Entity;
 				DbValidationError dve;
 
-				if (stat.Rank == "Perfect" && (stat.Safe != 0 || stat.Bad != 0 || stat.Awful != 0 || (!(stat.Good > 0) || !(stat.Cool > 0))))
+				if (stat.Rank == "Perfect")
 				{
-					dve = new DbValidationError("Rank", "Perfect requires 0 SAFE/BAD/MISS, and greater than 0 COOL/GOOD");
-					Errors.ValidationErrors.Add(dve);
+					if (stat.Safe != 0 || stat.Bad != 0 || stat.Awful != 0 || (!(stat.Good > 0) || !(stat.Cool > 0)))
+					{
+						dve = new DbValidationError("Rank", "Perfect requires 0 SAFE/BAD/MISS, and more than 0 COOL/GOOD");
+						Errors.ValidationErrors.Add(dve);
+					}
+
+					if (HelperMethods.IsOfFFamily(stat.s.Game) && (!stat.ChanceTimeBonus || !stat.TechZoneBonus1 || (stat.Difficulty != "Easy" && !stat.TechZoneBonus2)))
+					{
+						dve = new DbValidationError("Rank", "Perfect in F/F2nd requires Chance Time and Tech Zone bonusses to be checked");
+						Errors.ValidationErrors.Add(dve);
+					}
 				}
 			}
 

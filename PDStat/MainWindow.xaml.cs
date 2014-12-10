@@ -74,6 +74,7 @@ namespace PDStat
 			diffBox.ItemsSource = diff;
 			songBox.ItemsSource = songs;
 			songBox.IsEnabled = true;
+			LoadBestAttempt();
 
 			if (styleBox.SelectedItem != null && styleBox.SelectedItem.ToString() == "Auto")
 			{
@@ -100,7 +101,7 @@ namespace PDStat
 			TZ1Chk.IsChecked = false;
 			TZ2Chk.IsChecked = false;
 
-			if (IsOfFFamily(gamesBox.SelectedItem.ToString()))
+			if (HelperMethods.IsOfFFamily(gamesBox.SelectedItem.ToString()))
 			{
 				CTChk.IsEnabled = true;
 				TZ1Chk.IsEnabled = true;
@@ -170,7 +171,7 @@ namespace PDStat
 				using (PDStatContext db = new PDStatContext())
 				{
 					PdStat stat = new PdStat(){
-						Song = (from s in db.Songs where s.Game == gamesBox.SelectedItem.ToString() && s.Title == songBox.SelectedItem.ToString() select s.Id).First(),
+						s = (from s in db.Songs where s.Game == gamesBox.SelectedItem.ToString() && s.Title == songBox.SelectedItem.ToString() select s).First(),
 						diff = (from d in db.Difficulties where d.Name == diffBox.SelectedItem.ToString() select d).First(),
 						Attempt = currentAttempt,
 						Date = DateTime.Today.Date,
@@ -241,7 +242,7 @@ namespace PDStat
 			if (AwfulBox.Text == "0" && BadBox.Text == "0" && SafeBox.Text == "0" &&
 				Int32.TryParse(GoodBox.Text, out g) && g > 0 && Int32.TryParse(CoolBox.Text, out c) && c > 0)
 			{
-				if (IsOfFFamily(gamesBox.SelectedItem.ToString()))
+				if (HelperMethods.IsOfFFamily(gamesBox.SelectedItem.ToString()))
 				{
 					CTChk.IsChecked = true;
 					TZ1Chk.IsChecked = true;
@@ -341,7 +342,7 @@ namespace PDStat
 						bestBad.Content = stat.Bad;
 						bestAwful.Content = stat.Awful;
 
-						if (IsOfFFamily(gamesBox.SelectedItem.ToString()))
+						if (HelperMethods.IsOfFFamily(gamesBox.SelectedItem.ToString()))
 						{
 							bestCT.Content = stat.ChanceTimeBonus ? "Clear" : "Not clear";
 							bestTZ1.Content = stat.TechZoneBonus1 ? "Clear" : "Not clear";
@@ -379,12 +380,6 @@ namespace PDStat
 					}
 				}
 			}
-		}
-
-		private bool IsOfFFamily(string game)
-		{
-			return (game == "Project Diva f (Vita)" || game == "Project Diva F (PS3)" ||
-					game == "Project Diva f 2nd (Vita)" || game == "Project Diva F 2nd (PS3)");
 		}
 	}
 }
