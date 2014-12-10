@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
 
 namespace PDStat
 {
@@ -126,6 +129,25 @@ namespace PDStat
 			Database.SetInitializer<PDStatContext>(new DbInitializer());
 			using (PDStatContext db = new PDStatContext())
 				db.Database.Initialize(false);
+		}
+
+		protected override DbEntityValidationResult ValidateEntity(DbEntityEntry entityEntry, IDictionary<Object, Object> items)
+		{
+			DbEntityValidationResult Errors = new DbEntityValidationResult(entityEntry, new List<DbValidationError>());
+
+			if (entityEntry.Entity is PdStat)
+			{
+				PdStat stat = (PdStat)entityEntry.Entity;
+				DbValidationError dve;
+
+				if (stat.Rank == "Perfect" && (stat.Safe != 0 || stat.Bad != 0 || stat.Awful != 0 || (!(stat.Good > 0) || !(stat.Cool > 0))))
+				{
+					dve = new DbValidationError("Rank", "Perfect requires 0 SAFE/BAD/MISS, and greater than 0 COOL/GOOD");
+					Errors.ValidationErrors.Add(dve);
+				}
+			}
+
+			return (Errors.ValidationErrors.Count > 0) ? Errors : base.ValidateEntity(entityEntry, items);
 		}
 
 

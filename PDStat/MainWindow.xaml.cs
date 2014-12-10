@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 
 namespace PDStat
 {
@@ -83,7 +84,7 @@ namespace PDStat
 		private void songBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			diffBox.ItemsSource = diff;
-			if (diffBox.IsEnabled)
+			if (diffBox.IsEnabled && diffBox.SelectedItem != null)
 			{
 				LoadBestAttempt();
 			}
@@ -185,11 +186,23 @@ namespace PDStat
 						r = (from ra in db.Ranks where ra.Name == rankBox.SelectedItem.ToString() select ra).First(),
 					};
 					db.PDStats.Add(stat);
-					db.SaveChanges();
+					
+					try
+					{
+						db.SaveChanges();
+						LoadBestAttempt();
+						ClearScores();
+					}
+					catch (DbEntityValidationException)
+					{
+						List<DbEntityValidationResult> err = db.GetValidationErrors().ToList();
+						MessageBoxResult d = System.Windows.MessageBoxResult.None;
+						do
+						{
+							d = System.Windows.MessageBox.Show(err.First().ValidationErrors.First().ErrorMessage, "Invalid score submitted", MessageBoxButton.OK);
+						} while (d != System.Windows.MessageBoxResult.OK);
+					}
 				}
-
-				LoadBestAttempt();
-				ClearScores();
 			}
 		}
 
