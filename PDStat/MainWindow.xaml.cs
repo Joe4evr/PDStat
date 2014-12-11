@@ -36,11 +36,11 @@ namespace PDStat
 			using (PDStatContext db = new PDStatContext()) { } //no-op for initializing
 		}
 
-		private void gamesBox_Loaded(object sender, RoutedEventArgs e)
+		private async void gamesBox_Loaded(object sender, RoutedEventArgs e)
 		{
 			using (PDStatContext db = new PDStatContext())
 			{
-				foreach (var g in db.Games.OrderBy(g => g.Id).ToList())
+				foreach (var g in await db.Games.OrderBy(g => g.Id).ToListAsync())
 				{
 					games.Add(g.Name);
 				}
@@ -49,23 +49,23 @@ namespace PDStat
 			gamesBox.SelectedIndex = 0;
 		}
 
-		private void gamesBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		private async void gamesBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			diff = new List<string>();
 			songs = new List<string>();
 
 			using (PDStatContext db = new PDStatContext())
 			{
-				foreach (var d in db.Difficulties.OrderBy(d => d.Id).ToList())
+				foreach (var d in await db.Difficulties.OrderBy(d => d.Id).ToListAsync())
 				{
 					diff.Add(d.Name);
 				}
 
-				if (gamesBox.SelectedItem.ToString() == Helpers.PD1 ||
-					gamesBox.SelectedItem.ToString() == Helpers.PDDT)
+				if (gamesBox.SelectedItem.ToString() == Helpers.PD1 || gamesBox.SelectedItem.ToString() == Helpers.PDDT)
 				{
 					diff.Remove("Extreme");
 				}
+
 				foreach (var s in db.Songs.Where(g => g.Game == gamesBox.SelectedItem.ToString()).OrderBy(s => s.Id))
 				{
 					songs.Add(s.Title);
@@ -74,7 +74,7 @@ namespace PDStat
 			diffBox.ItemsSource = diff;
 			songBox.ItemsSource = songs;
 			songBox.IsEnabled = true;
-			LoadBestAttempt();
+			await LoadBestAttemptAsync();
 
 			if (styleBox.SelectedItem != null && styleBox.SelectedItem.ToString() == "Auto")
 			{
@@ -82,12 +82,12 @@ namespace PDStat
 			}
 		}
 
-		private void songBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		private async void songBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			diffBox.ItemsSource = diff;
 			if (diffBox.IsEnabled && diffBox.SelectedItem != null)
 			{
-				LoadBestAttempt();
+				await LoadBestAttemptAsync();
 			}
 			else
 			{
@@ -95,7 +95,7 @@ namespace PDStat
 			}
 		}
 
-		private void diffBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		private async void diffBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			CTChk.IsChecked = false;
 			TZ1Chk.IsChecked = false;
@@ -114,15 +114,15 @@ namespace PDStat
 				TZ2Chk.IsEnabled = false;
 			}
 
-			LoadBestAttempt();
+			await LoadBestAttemptAsync();
 		}
 
-		private void rankBox_Loaded(object sender, RoutedEventArgs e)
+		private async void rankBox_Loaded(object sender, RoutedEventArgs e)
 		{
 			List<string> ranks = new List<string>();
 			using (PDStatContext db = new PDStatContext())
 			{
-				foreach (var r in db.Ranks.OrderBy(r => r.Id).ToList())
+				foreach (var r in await db.Ranks.OrderBy(r => r.Id).ToListAsync())
 				{
 					ranks.Add(r.Name);
 				}
@@ -156,7 +156,7 @@ namespace PDStat
 		}
 
 
-		private void SubmitBtn_Click(object sender, RoutedEventArgs e)
+		private async void SubmitBtn_Click(object sender, RoutedEventArgs e)
 		{
 			short cools;
 			short goods;
@@ -171,8 +171,8 @@ namespace PDStat
 				using (PDStatContext db = new PDStatContext())
 				{
 					PdStat stat = new PdStat(){
-						s = (from s in db.Songs where s.Game == gamesBox.SelectedItem.ToString() && s.Title == songBox.SelectedItem.ToString() select s).First(),
-						diff = (from d in db.Difficulties where d.Name == diffBox.SelectedItem.ToString() select d).First(),
+						s = await (from s in db.Songs where s.Game == gamesBox.SelectedItem.ToString() && s.Title == songBox.SelectedItem.ToString() select s).FirstAsync(),
+						diff = await (from d in db.Difficulties where d.Name == diffBox.SelectedItem.ToString() select d).FirstAsync(),
 						Attempt = currentAttempt,
 						Date = DateTime.Today.Date,
 						Cool = cools,
@@ -184,14 +184,14 @@ namespace PDStat
 						TechZoneBonus1 = TZ1Chk.IsChecked ?? false,
 						TechZoneBonus2 = TZ2Chk.IsChecked ?? false,
 						Score = score,
-						r = (from ra in db.Ranks where ra.Name == rankBox.SelectedItem.ToString() select ra).First(),
+						r = await (from ra in db.Ranks where ra.Name == rankBox.SelectedItem.ToString() select ra).FirstAsync(),
 					};
 					db.PDStats.Add(stat);
 					
 					try
 					{
-						db.SaveChanges();
-						LoadBestAttempt();
+						await db.SaveChangesAsync();
+						await LoadBestAttemptAsync();
 						ClearScores();
 					}
 					catch (DbEntityValidationException)
@@ -207,14 +207,14 @@ namespace PDStat
 			}
 		}
 
-		private void ResetBtn_Click(object sender, RoutedEventArgs e)
+		private async void ResetBtn_Click(object sender, RoutedEventArgs e)
 		{
 			using (PDStatContext db = new PDStatContext())
 			{
 				PdStat stat = new PdStat()
 				{
-					Song = (from s in db.Songs where s.Game == gamesBox.SelectedItem.ToString() && s.Title == songBox.SelectedItem.ToString() select s.Id).First(),
-					diff = (from d in db.Difficulties where d.Name == diffBox.SelectedItem.ToString() select d).First(),
+					s = await (from s in db.Songs where s.Game == gamesBox.SelectedItem.ToString() && s.Title == songBox.SelectedItem.ToString() select s).FirstAsync(),
+					diff = await (from d in db.Difficulties where d.Name == diffBox.SelectedItem.ToString() select d).FirstAsync(),
 					Attempt = currentAttempt,
 					Date = DateTime.Today.Date,
 					Cool = 0,
@@ -226,10 +226,10 @@ namespace PDStat
 					TechZoneBonus1 = false,
 					TechZoneBonus2 = false,
 					Score = 0,
-					r = (from ra in db.Ranks where ra.Name == "Unfinished" select ra).First(),
+					r = await (from ra in db.Ranks where ra.Name == "Unfinished" select ra).FirstAsync(),
 				};
 				db.PDStats.Add(stat);
-				db.SaveChanges();
+				await db.SaveChangesAsync();
 			}
 
 			IncrementAttempt(ref currentAttempt);
@@ -322,17 +322,16 @@ namespace PDStat
 			ScoreBox.Text = String.Empty;
 		}
 
-		private void LoadBestAttempt()
+		private async Task LoadBestAttemptAsync()
 		{
 			using (PDStatContext db = new PDStatContext())
 			{
 				if (songBox.SelectedItem != null && diffBox.SelectedItem != null)
 				{
-					int song = (from s in db.Songs where s.Game == gamesBox.SelectedItem.ToString() && s.Title == songBox.SelectedItem.ToString() select s.Id).First();
-					PdStat stat;
+					int song = await (from s in db.Songs where s.Game == gamesBox.SelectedItem.ToString() && s.Title == songBox.SelectedItem.ToString() select s.Id).FirstAsync();
 					try
 					{
-						stat = (from s in db.PDStats where s.Song == song && s.Difficulty == diffBox.SelectedItem.ToString() select s).OrderByDescending(s => s.Score).First();
+						PdStat stat = await (from s in db.PDStats where s.Song == song && s.Difficulty == diffBox.SelectedItem.ToString() select s).OrderByDescending(s => s.Score).FirstAsync();
 					
 						bestCool.Content = stat.Cool;
 						bestGood.Content = stat.Good;
@@ -355,8 +354,8 @@ namespace PDStat
 						bestScore.Content = stat.Score;
 						bestRank.Content = stat.Rank;
 
-						currentAttempt = (from s in db.PDStats where s.Song == song && s.Difficulty == stat.Difficulty select s).OrderByDescending(s => s.Attempt).First().Attempt;
-						IncrementAttempt(ref currentAttempt);
+						PdStat s2 = await (from s in db.PDStats where s.Song == song && s.Difficulty == stat.Difficulty select s).OrderByDescending(s => s.Attempt).FirstAsync();
+						currentAttempt = s2.Attempt;
 					}
 					catch (InvalidOperationException)
 					{
@@ -374,9 +373,9 @@ namespace PDStat
 						bestRank.Content = String.Empty;
 
 						currentAttempt = 0;
-						IncrementAttempt(ref currentAttempt);
 					}
 
+					IncrementAttempt(ref currentAttempt);
 					CoolBox.Focus();
 				}
 			}
