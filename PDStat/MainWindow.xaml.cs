@@ -61,8 +61,8 @@ namespace PDStat
 					diff.Add(d.Name);
 				}
 
-				if (gamesBox.SelectedItem.ToString() == "Project Diva (1)" ||
-					gamesBox.SelectedItem.ToString() == "Project Diva DT")
+				if (gamesBox.SelectedItem.ToString() == Helpers.PD1 ||
+					gamesBox.SelectedItem.ToString() == Helpers.PDDT)
 				{
 					diff.Remove("Extreme");
 				}
@@ -101,7 +101,7 @@ namespace PDStat
 			TZ1Chk.IsChecked = false;
 			TZ2Chk.IsChecked = false;
 
-			if (HelperMethods.IsOfFFamily(gamesBox.SelectedItem.ToString()))
+			if (Helpers.IsOfFFamily(gamesBox.SelectedItem.ToString()))
 			{
 				CTChk.IsEnabled = true;
 				TZ1Chk.IsEnabled = true;
@@ -242,7 +242,7 @@ namespace PDStat
 			if (AwfulBox.Text == "0" && BadBox.Text == "0" && SafeBox.Text == "0" &&
 				Int32.TryParse(GoodBox.Text, out g) && g > 0 && Int32.TryParse(CoolBox.Text, out c) && c > 0)
 			{
-				if (HelperMethods.IsOfFFamily(gamesBox.SelectedItem.ToString()))
+				if (Helpers.IsOfFFamily(gamesBox.SelectedItem.ToString()))
 				{
 					CTChk.IsChecked = true;
 					TZ1Chk.IsChecked = true;
@@ -266,13 +266,11 @@ namespace PDStat
 			if (selection == EnumHelper.GetEnumDescription(ScoreStyle.Auto))
 			{
 				string game = gamesBox.SelectedItem.ToString();
-				if (game == "Project Diva f (Vita)" ||
-					game == "Project Diva F (PS3)")
+				if (game == Helpers.PDFV || game == Helpers.PDFP)
 				{
 					selection = EnumHelper.GetEnumDescription(ScoreStyle.EnglishF);
 				}
-				else if (game == "Project Diva f 2nd (Vita)" ||
-						 game == "Project Diva F 2nd (PS3)")
+				else if (game == Helpers.PDF2V || game == Helpers.PDF2P)
 				{
 					selection = EnumHelper.GetEnumDescription(ScoreStyle.EnglishF2);
 				}
@@ -328,7 +326,7 @@ namespace PDStat
 		{
 			using (PDStatContext db = new PDStatContext())
 			{
-				if (songBox.SelectedItem != null)
+				if (songBox.SelectedItem != null && diffBox.SelectedItem != null)
 				{
 					int song = (from s in db.Songs where s.Game == gamesBox.SelectedItem.ToString() && s.Title == songBox.SelectedItem.ToString() select s.Id).First();
 					PdStat stat;
@@ -342,11 +340,11 @@ namespace PDStat
 						bestBad.Content = stat.Bad;
 						bestAwful.Content = stat.Awful;
 
-						if (HelperMethods.IsOfFFamily(gamesBox.SelectedItem.ToString()))
+						if (Helpers.IsOfFFamily(stat.s.Game))
 						{
 							bestCT.Content = stat.ChanceTimeBonus ? "Clear" : "Not clear";
 							bestTZ1.Content = stat.TechZoneBonus1 ? "Clear" : "Not clear";
-							bestTZ2.Content = diffBox.SelectedItem.ToString() == "Easy" ? String.Empty : (stat.TechZoneBonus2 ? "Clear" : "Not clear");
+							bestTZ2.Content = stat.Difficulty == "Easy" ? String.Empty : (stat.TechZoneBonus2 ? "Clear" : "Not clear");
 						}
 						else
 						{
@@ -357,7 +355,7 @@ namespace PDStat
 						bestScore.Content = stat.Score;
 						bestRank.Content = stat.Rank;
 
-						currentAttempt = (from s in db.PDStats where s.Song == song && s.Difficulty == diffBox.SelectedItem.ToString() select s).OrderByDescending(s => s.Attempt).First().Attempt;
+						currentAttempt = (from s in db.PDStats where s.Song == song && s.Difficulty == stat.Difficulty select s).OrderByDescending(s => s.Attempt).First().Attempt;
 						IncrementAttempt(ref currentAttempt);
 					}
 					catch (InvalidOperationException)
@@ -378,6 +376,8 @@ namespace PDStat
 						currentAttempt = 0;
 						IncrementAttempt(ref currentAttempt);
 					}
+
+					CoolBox.Focus();
 				}
 			}
 		}

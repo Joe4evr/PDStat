@@ -23,7 +23,7 @@ namespace PDStat
 		[ForeignKey("Game")]
 		public virtual Game g { get; set; }
 
-
+		public string Mode { get; set; }
 	}
 
 	public class PdStat
@@ -47,6 +47,8 @@ namespace PDStat
 		public virtual Difficulty diff { get; set; }
 
 		public DateTime Date { get; set; }
+
+		public short BestCombo { get; set; }
 		public short Cool { get; set; }
 		public short Good { get; set; } //Fine
 		public short Safe { get; set; }
@@ -148,7 +150,7 @@ namespace PDStat
 						Errors.ValidationErrors.Add(dve);
 					}
 
-					if (HelperMethods.IsOfFFamily(stat.s.Game) && (!stat.ChanceTimeBonus || !stat.TechZoneBonus1 || (stat.Difficulty != "Easy" && !stat.TechZoneBonus2)))
+					if (Helpers.IsOfFFamily(stat.s.Game) && (!stat.ChanceTimeBonus || !stat.TechZoneBonus1 || (stat.Difficulty != "Easy" && !stat.TechZoneBonus2)))
 					{
 						dve = new DbValidationError("Rank", "Perfect in F/F2nd requires Chance Time and Tech Zone bonusses to be checked");
 						Errors.ValidationErrors.Add(dve);
@@ -190,54 +192,68 @@ namespace PDStat
 			context.Ranks.Add(new Rank() { Id = 1, Name = "DROPxOUT" });
 			context.Ranks.Add(new Rank() { Id = 0, Name = "Unfinished" });
 
-			context.Games.Add(new Game() { Id = 0, Name = "Project Diva (1)" });
-			context.Games.Add(new Game() { Id = 1, Name = "Project Diva 2nd" });
-			context.Games.Add(new Game() { Id = 2, Name = "Project Diva Extend" });
+			context.Games.Add(new Game() { Id = 0, Name = Helpers.PD1 });
+			context.Games.Add(new Game() { Id = 1, Name = Helpers.PD2 });
+			context.Games.Add(new Game() { Id = 2, Name = Helpers.PDX });
 
-			context.Games.Add(new Game() { Id = 3, Name = "Project Diva DT" });
-			context.Games.Add(new Game() { Id = 4, Name = "Project Diva DT 2nd" });
-			context.Games.Add(new Game() { Id = 5, Name = "Project Diva DT Extend" });
+			context.Games.Add(new Game() { Id = 3, Name = Helpers.PDDT });
+			context.Games.Add(new Game() { Id = 4, Name = Helpers.PDDT2 });
+			context.Games.Add(new Game() { Id = 5, Name = Helpers.PDDTX });
 
-			context.Games.Add(new Game() { Id = 6, Name = "Project Diva f (Vita)" });
-			context.Games.Add(new Game() { Id = 7, Name = "Project Diva F (PS3)" });
-			context.Games.Add(new Game() { Id = 8, Name = "Project Diva f 2nd (Vita)" });
-			context.Games.Add(new Game() { Id = 9, Name = "Project Diva F 2nd (PS3)" });
+			context.Games.Add(new Game() { Id = 6, Name = Helpers.PDFV });
+			context.Games.Add(new Game() { Id = 7, Name = Helpers.PDFP });
+			context.Games.Add(new Game() { Id = 8, Name = Helpers.PDF2V });
+			context.Games.Add(new Game() { Id = 9, Name = Helpers.PDF2P });
 			#endregion
+
+			string def = "Default";
+			string tut = "Tutorial";
+			string ip = "Ievan Polkka";
 
 			int i = 0;
 			string[] pd1songs = PDStat.Properties.Resources.PD1.Split('\n');
 			foreach (string s in pd1songs)
 			{
-				context.Songs.Add(new Song() { Id = i++, Game = "Project Diva (1)", Title = s.Trim() });
-				context.Songs.Add(new Song() { Id = i++, Game = "Project Diva DT", Title = s.Trim() });
+				context.Songs.Add(new Song() { Id = i++, Mode = def, Game = Helpers.PD1, Title = s.Trim() });
+				context.Songs.Add(new Song() { Id = i++, Mode = def, Game = Helpers.PDDT, Title = s.Trim() });
 			}
-			
+
+			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PD2, Title = ip });
+			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDDT2, Title = ip });
 			string[] pd2songs = PDStat.Properties.Resources.PD2.Split('\n');
 			foreach (string s in pd2songs)
 			{
-				context.Songs.Add(new Song() { Id = i++, Game = "Project Diva 2nd", Title = s.Trim() });
-				context.Songs.Add(new Song() { Id = i++, Game = "Project Diva DT 2nd ", Title = s.Trim() });
+				context.Songs.Add(new Song() { Id = i++, Mode = def, Game = Helpers.PD2, Title = s.Trim() });
+				context.Songs.Add(new Song() { Id = i++, Mode = def, Game = Helpers.PDDT2, Title = s.Trim() });
 			}
 
+			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDX, Title = ip });
+			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDDTX, Title = ip });
 			string[] pdXsongs = PDStat.Properties.Resources.PDX.Split('\n');
 			foreach (string s in pdXsongs)
 			{
-				context.Songs.Add(new Song() { Id = i++, Game = "Project Diva Extend", Title = s.Trim() });
-				context.Songs.Add(new Song() { Id = i++, Game = "Project Diva DT Extend", Title = s.Trim() });
+				context.Songs.Add(new Song() { Id = i++, Mode = def, Game = Helpers.PDX, Title = s.Trim() });
+				context.Songs.Add(new Song() { Id = i++, Mode = def, Game = Helpers.PDDTX, Title = s.Trim() });
 			}
 
+			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDFV, Title = ip });
+			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDFP, Title = ip });
 			string[] pdFsongs = PDStat.Properties.Resources.PDF.Split('\n');
 			foreach (string s in pdFsongs)
 			{
-				context.Songs.Add(new Song() { Id = i++, Game = "Project Diva f (Vita)", Title = s.Trim() });
-				context.Songs.Add(new Song() { Id = i++, Game = "Project Diva F (PS3)", Title = s.Trim() });
+				context.Songs.Add(new Song() { Id = i++, Mode = def, Game = Helpers.PDFV, Title = s.Trim() });
+				context.Songs.Add(new Song() { Id = i++, Mode = def, Game = Helpers.PDFP, Title = s.Trim() });
 			}
 
+			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDF2V, Title = ip });
+			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDF2P, Title = ip });
+			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDF2V, Title = ip + " (Extreme)" });
+			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDF2P, Title = ip + " (Extreme)" });
 			string[] pdF2songs = PDStat.Properties.Resources.PDF2.Split('\n');
 			foreach (string s in pdF2songs)
 			{
-				context.Songs.Add(new Song() { Id = i++, Game = "Project Diva f 2nd (Vita)", Title = s.Trim() });
-				context.Songs.Add(new Song() { Id = i++, Game = "Project Diva F 2nd (PS3)", Title = s.Trim() });
+				context.Songs.Add(new Song() { Id = i++, Mode = def, Game = Helpers.PDF2V, Title = s.Trim() });
+				context.Songs.Add(new Song() { Id = i++, Mode = def, Game = Helpers.PDF2P, Title = s.Trim() });
 			}
 
 			base.Seed(context);

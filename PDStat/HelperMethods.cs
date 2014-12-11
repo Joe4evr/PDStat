@@ -42,7 +42,7 @@ namespace PDStat
 		}
 	}
 
-	public static class HelperMethods
+	public static class Helpers
 	{
 		//doesn't work?
 		public static string GetDescription<T>(T value)
@@ -62,9 +62,20 @@ namespace PDStat
 
 		public static bool IsOfFFamily(string game)
 		{
-			return (game == "Project Diva f (Vita)" || game == "Project Diva F (PS3)" ||
-					game == "Project Diva f 2nd (Vita)" || game == "Project Diva F 2nd (PS3)");
+			return (game == PDFV || game == PDFP || game == PDF2V || game == PDF2P);
 		}
 
+		public static readonly string PD1 = "Project Diva (1)";
+		public static readonly string PD2 = "Project Diva 2nd";
+		public static readonly string PDX = "Project Diva Extend";
+
+		public static readonly string PDDT = "Project Diva DT";
+		public static readonly string PDDT2 = "Project Diva DT 2nd";
+		public static readonly string PDDTX = "Project Diva DT Extend";
+
+		public static readonly string PDFV = "Project Diva f (Vita)";
+		public static readonly string PDFP = "Project Diva F (PS3)";
+		public static readonly string PDF2V = "Project Diva f 2nd (Vita)";
+		public static readonly string PDF2P = "Project Diva F 2nd (PS3)";
 	}
 }
