@@ -24,7 +24,7 @@ namespace PDStat
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		List<string> games = new List<string>();
+		public static List<string> games = new List<string>();
 		List<string> songs;
 		List<string> diff;
 		int currentAttempt = 0;
@@ -51,69 +51,16 @@ namespace PDStat
 
 		private async void gamesBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			diff = new List<string>();
-			songs = new List<string>();
-
-			using (PDStatContext db = new PDStatContext())
-			{
-				foreach (var d in await db.Difficulties.OrderBy(d => d.Id).ToListAsync())
-				{
-					diff.Add(d.Name);
-				}
-
-				if (gamesBox.SelectedItem.ToString() == Helpers.PD1 || gamesBox.SelectedItem.ToString() == Helpers.PDDT)
-				{
-					diff.Remove("Extreme");
-				}
-
-				foreach (var s in db.Songs.Where(g => g.Game == gamesBox.SelectedItem.ToString()).OrderBy(s => s.Id))
-				{
-					songs.Add(s.Title);
-				}
-			}
-			diffBox.ItemsSource = diff;
-			songBox.ItemsSource = songs;
-			songBox.IsEnabled = true;
-			await LoadBestAttemptAsync();
-
-			if (styleBox.SelectedItem != null && styleBox.SelectedItem.ToString() == "Auto")
-			{
-				ChangeStyle();
-			}
-		}
-
-		private async void songBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			diffBox.ItemsSource = diff;
-			if (diffBox.IsEnabled && diffBox.SelectedItem != null)
-			{
-				await LoadBestAttemptAsync();
-			}
-			else
-			{
-				diffBox.IsEnabled = true;
-			}
+			await GamesBoxChangedAsync();
 		}
 
 		private async void diffBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			CTChk.IsChecked = false;
-			TZ1Chk.IsChecked = false;
-			TZ2Chk.IsChecked = false;
+			await DiffBoxChangedAsync();
+		}
 
-			if (Helpers.IsOfFFamily(gamesBox.SelectedItem.ToString()))
-			{
-				CTChk.IsEnabled = true;
-				TZ1Chk.IsEnabled = true;
-				TZ2Chk.IsEnabled = !(diffBox.SelectedItem.ToString() == "Easy");
-			}
-			else
-			{
-				CTChk.IsEnabled = false;
-				TZ1Chk.IsEnabled = false;
-				TZ2Chk.IsEnabled = false;
-			}
-
+		private async void songBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
 			await LoadBestAttemptAsync();
 		}
 
@@ -131,23 +78,21 @@ namespace PDStat
 			rankBox.ItemsSource = ranks;
 		}
 
-		private void styleBox_Loaded(object sender, RoutedEventArgs e)
+		private async void styleBox_Loaded(object sender, RoutedEventArgs e)
 		{
-			var styles = new List<string>();
-			EnumHelper.EnumToList<ScoreStyle>().ForEach(delegate (ScoreStyle s)
+			List<string> styles = new List<string>();
+			using (PDStatContext db = new PDStatContext())
 			{
-				styles.Add(EnumHelper.GetEnumDescription(s));
-			});
+				styles = await db.ScoreStyle.OrderBy(s => s.Id).Select(s => s.StyleName).ToListAsync();
+			}
+			styles.Insert(0, "Auto");
 			styleBox.ItemsSource = styles;
-			//TODO: Set to last setting/user preference
-			//for now, default will be Auto
 			styleBox.SelectedIndex = 0;
-			
 		}
 
-		private void styleBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		private async void styleBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			ChangeStyle();
+			await ChangeStyle();
 		}
 
 		private void attemptCounter_Loaded(object sender, RoutedEventArgs e)
@@ -158,60 +103,14 @@ namespace PDStat
 
 		private async void SubmitBtn_Click(object sender, RoutedEventArgs e)
 		{
-			short cools;
-			short goods;
-			short safes;
-			short bads;
-			short awfuls;
-			int score; //This can be nicely refactored only once C# 6 is out =(
-			if (Int16.TryParse(CoolBox.Text, out cools) && Int16.TryParse(GoodBox.Text, out goods) &&
-				Int16.TryParse(SafeBox.Text, out safes) && Int16.TryParse(BadBox.Text, out bads) &&
-				Int16.TryParse(AwfulBox.Text, out awfuls) && Int32.TryParse(ScoreBox.Text, out score))
-			{
-				using (PDStatContext db = new PDStatContext())
-				{
-					PdStat stat = new PdStat(){
-						s = await (from s in db.Songs where s.Game == gamesBox.SelectedItem.ToString() && s.Title == songBox.SelectedItem.ToString() select s).FirstAsync(),
-						diff = await (from d in db.Difficulties where d.Name == diffBox.SelectedItem.ToString() select d).FirstAsync(),
-						Attempt = currentAttempt,
-						Date = DateTime.Today.Date,
-						Cool = cools,
-						Good = goods,
-						Safe = safes,
-						Bad = bads,
-						Awful = awfuls,
-						ChanceTimeBonus = CTChk.IsChecked ?? false,
-						TechZoneBonus1 = TZ1Chk.IsChecked ?? false,
-						TechZoneBonus2 = TZ2Chk.IsChecked ?? false,
-						Score = score,
-						r = await (from ra in db.Ranks where ra.Name == rankBox.SelectedItem.ToString() select ra).FirstAsync(),
-					};
-					db.PDStats.Add(stat);
-					
-					try
-					{
-						await db.SaveChangesAsync();
-						await LoadBestAttemptAsync();
-						ClearScores();
-					}
-					catch (DbEntityValidationException)
-					{
-						List<DbEntityValidationResult> err = db.GetValidationErrors().ToList();
-						MessageBoxResult d = System.Windows.MessageBoxResult.None;
-						do
-						{
-							d = System.Windows.MessageBox.Show(err.First().ValidationErrors.First().ErrorMessage, "Invalid score submitted", MessageBoxButton.OK);
-						} while (d != System.Windows.MessageBoxResult.OK);
-					}
-				}
-			}
+			await SubmitScoreAsync();
 		}
 
 		private async void ResetBtn_Click(object sender, RoutedEventArgs e)
 		{
 			using (PDStatContext db = new PDStatContext())
 			{
-				PdStat stat = new PdStat()
+				db.PDStats.Add(new PdStat()
 				{
 					s = await (from s in db.Songs where s.Game == gamesBox.SelectedItem.ToString() && s.Title == songBox.SelectedItem.ToString() select s).FirstAsync(),
 					diff = await (from d in db.Difficulties where d.Name == diffBox.SelectedItem.ToString() select d).FirstAsync(),
@@ -227,21 +126,28 @@ namespace PDStat
 					TechZoneBonus2 = false,
 					Score = 0,
 					r = await (from ra in db.Ranks where ra.Name == "Unfinished" select ra).FirstAsync(),
-				};
-				db.PDStats.Add(stat);
+				});
 				await db.SaveChangesAsync();
 			}
 
 			IncrementAttempt(ref currentAttempt);
 		}
 
+		private async void manageEdits_Click(object sender, RoutedEventArgs e)
+		{
+			ManageEditSongs mes = new ManageEditSongs();
+			mes.ShowDialog();
+			await ReloadSongs();
+		}
+
 		private void AwfulBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			int g;
-			int c;
+			int c; //yet another subject for C# 6 refactoring
 			if (AwfulBox.Text == "0" && BadBox.Text == "0" && SafeBox.Text == "0" &&
 				Int32.TryParse(GoodBox.Text, out g) && g > 0 && Int32.TryParse(CoolBox.Text, out c) && c > 0)
 			{
+				//maxCombo.Text = GoodBox.Text + CoolBox.Text;
 				if (Helpers.IsOfFFamily(gamesBox.SelectedItem.ToString()))
 				{
 					CTChk.IsChecked = true;
@@ -259,48 +165,6 @@ namespace PDStat
 #endif
 		}
 
-
-		private void ChangeStyle()
-		{
-			string selection = styleBox.SelectedItem.ToString();
-			if (selection == EnumHelper.GetEnumDescription(ScoreStyle.Auto))
-			{
-				string game = gamesBox.SelectedItem.ToString();
-				if (game == Helpers.PDFV || game == Helpers.PDFP)
-				{
-					selection = EnumHelper.GetEnumDescription(ScoreStyle.EnglishF);
-				}
-				else if (game == Helpers.PDF2V || game == Helpers.PDF2P)
-				{
-					selection = EnumHelper.GetEnumDescription(ScoreStyle.EnglishF2);
-				}
-				else
-				{
-					selection = EnumHelper.GetEnumDescription(ScoreStyle.Japanese);
-				}
-			}
-			
-			if (selection == EnumHelper.GetEnumDescription(ScoreStyle.EnglishF))
-			{
-				goodLabel.Content = "GOOD";
-				badLabel.Content = "BAD";
-				awfulLabel.Content = "AWFUL";
-
-			}
-			else if (selection == EnumHelper.GetEnumDescription(ScoreStyle.EnglishF2))
-			{
-				goodLabel.Content = "GOOD";
-				badLabel.Content = "BAD";
-				awfulLabel.Content = "MISS";
-			}
-			else //Japanese
-			{
-				goodLabel.Content = "FINE";
-				badLabel.Content = "SAD";
-				awfulLabel.Content = "WORST";
-		 
-			}
-		}
 
 		private void IncrementAttempt(ref int attempt)
 		{
@@ -322,11 +186,68 @@ namespace PDStat
 			ScoreBox.Text = String.Empty;
 		}
 
+		private async Task GamesBoxChangedAsync()
+		{
+			diff = new List<string>();
+			songs = new List<string>();
+
+			using (PDStatContext db = new PDStatContext())
+			{
+				foreach (var d in await db.Difficulties.OrderBy(d => d.Id).ToListAsync())
+				{
+					diff.Add(d.Name);
+				}
+				foreach (var s in await db.Songs.OrderBy(s => s.Id).Where(s => s.Game == gamesBox.SelectedItem.ToString()).Select(s => s.Title).ToListAsync())
+				{
+					songs.Add(s);
+				}
+			}
+
+			if (gamesBox.SelectedItem.ToString() == Helpers.PD1 || gamesBox.SelectedItem.ToString() == Helpers.PDDT)
+			{
+				diff.Remove("Extreme");
+				diff.Remove("Tutorial");
+			}
+
+			if (styleBox.SelectedItem != null && styleBox.SelectedItem.ToString() == "Auto")
+			{
+				await ChangeStyle();
+			}
+
+			diffBox.ItemsSource = diff;
+			diffBox.IsEnabled = true;
+			await LoadBestAttemptAsync();
+		}
+
+		private async Task DiffBoxChangedAsync()
+		{
+			CTChk.IsChecked = false;
+			TZ1Chk.IsChecked = false;
+			TZ2Chk.IsChecked = false;
+
+			if (Helpers.IsOfFFamily(gamesBox.SelectedItem.ToString()))
+			{
+				CTChk.IsEnabled = true;
+				TZ1Chk.IsEnabled = true;
+				TZ2Chk.IsEnabled = !(diffBox.SelectedItem.ToString() == "Easy");
+			}
+			else
+			{
+				CTChk.IsEnabled = false;
+				TZ1Chk.IsEnabled = false;
+				TZ2Chk.IsEnabled = false;
+			}
+
+			await ReloadSongs();
+			songBox.IsEnabled = true;
+			await LoadBestAttemptAsync();
+		}
+
 		private async Task LoadBestAttemptAsync()
 		{
 			using (PDStatContext db = new PDStatContext())
 			{
-				if (songBox.SelectedItem != null && diffBox.SelectedItem != null)
+				if (gamesBox.SelectedItem != null && diffBox.SelectedItem != null && songBox.SelectedItem != null)
 				{
 					int song = await (from s in db.Songs where s.Game == gamesBox.SelectedItem.ToString() && s.Title == songBox.SelectedItem.ToString() select s.Id).FirstAsync();
 					try
@@ -379,6 +300,119 @@ namespace PDStat
 					CoolBox.Focus();
 				}
 			}
+		}
+
+		private async Task SubmitScoreAsync()
+		{
+			SubmitBtn.IsEnabled = false;
+			short cools;
+			short goods;
+			short safes;
+			short bads;
+			short awfuls;
+			int score; //This can be nicely refactored only once C# 6 is out =(
+			if (Int16.TryParse(CoolBox.Text, out cools) && Int16.TryParse(GoodBox.Text, out goods) &&
+				Int16.TryParse(SafeBox.Text, out safes) && Int16.TryParse(BadBox.Text, out bads) &&
+				Int16.TryParse(AwfulBox.Text, out awfuls) && Int32.TryParse(ScoreBox.Text, out score))
+			{
+				using (PDStatContext db = new PDStatContext())
+				{
+					PdStat stat = db.PDStats.Add(new PdStat()
+					{
+						s = await (from s in db.Songs where s.Game == gamesBox.SelectedItem.ToString() && s.Title == songBox.SelectedItem.ToString() select s).FirstAsync(),
+						diff = await (from d in db.Difficulties where d.Name == diffBox.SelectedItem.ToString() select d).FirstAsync(),
+						Attempt = currentAttempt,
+						Date = DateTime.Today.Date,
+						Cool = cools,
+						Good = goods,
+						Safe = safes,
+						Bad = bads,
+						Awful = awfuls,
+						ChanceTimeBonus = CTChk.IsChecked ?? false,
+						TechZoneBonus1 = TZ1Chk.IsChecked ?? false,
+						TechZoneBonus2 = TZ2Chk.IsChecked ?? false,
+						Score = score,
+						r = await (from ra in db.Ranks where ra.Name == rankBox.SelectedItem.ToString() select ra).FirstAsync(),
+					});
+
+					try
+					{
+						await db.SaveChangesAsync();
+						await LoadBestAttemptAsync();
+						ClearScores();
+					}
+					catch (DbEntityValidationException)
+					{
+						List<DbEntityValidationResult> err = db.GetValidationErrors().ToList();
+						MessageBoxResult d = System.Windows.MessageBoxResult.None;
+						do
+						{
+							d = System.Windows.MessageBox.Show(err.First().ValidationErrors.First().ErrorMessage, "Invalid score submitted", MessageBoxButton.OK);
+						} while (d != System.Windows.MessageBoxResult.OK);
+					}
+				}
+			}
+			SubmitBtn.IsEnabled = true;
+		}
+
+		private async Task ReloadSongs()
+		{
+			songs = new List<string>();
+
+			string mode = (diffBox.SelectedItem != null && (diffBox.SelectedItem.ToString() == "Tutorial" || diffBox.SelectedItem.ToString() == "Edit")) ? diffBox.SelectedItem.ToString() : "Default";
+
+			using (PDStatContext db = new PDStatContext())
+			{
+				foreach (var s in await db.Songs.Where(g => g.Game == gamesBox.SelectedItem.ToString() && g.Mode == mode).OrderBy(s => s.Id).ToListAsync())
+				{
+					songs.Add(s.Title);
+				}
+			}
+
+			songBox.ItemsSource = songs;
+		}
+
+		private async Task ChangeStyle()
+		{
+			string selection = styleBox.SelectedItem.ToString();
+			if (selection == "Auto")
+			{
+				switch (gamesBox.SelectedItem.ToString())
+				{
+					case Helpers.PDFV:
+					case Helpers.PDFP:
+						selection = "English (F)";
+						break;
+					case Helpers.PDF2V:
+					case Helpers.PDF2P:
+						selection = "English (F 2nd)";
+						break;
+					default:
+						selection = "Japanese";
+						break;
+				}
+			}
+			
+			
+			ScoreStyle ss;
+			using (PDStatContext db = new PDStatContext())
+			{
+				ss = await (from s in db.ScoreStyle where s.StyleName == selection select s).FirstAsync();
+			}
+			coolLabel.Content = ss.CoolStyle;
+			goodLabel.Content = ss.GoodStyle;
+			safeLabel.Content = ss.SafeStyle;
+			badLabel.Content = ss.BadStyle;
+			awfulLabel.Content = ss.AwfulStyle;
+			
+			List<string> ranks = new List<string>();
+			ranks.Add(ss.FRank);
+			ranks.Add(ss.LRank);
+			ranks.Add(ss.SRank);
+			ranks.Add(ss.GRank);
+			ranks.Add(ss.ERank);
+			ranks.Add(ss.PRank);
+			rankBox.ItemsSource = ranks;
 		}
 	}
 }

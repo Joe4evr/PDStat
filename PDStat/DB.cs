@@ -113,14 +113,24 @@ namespace PDStat
 		//ProjectDivaF2PS3,
 	}
 
-	public enum ScoreStyle
+	public class ScoreStyle
 	{
-		Auto,
-		[Description("English (F)")]
-		EnglishF,
-		[Description("English (F 2nd)")]
-		EnglishF2,
-		Japanese,
+		public int Id { get; set; }
+
+		[Key]
+		public string StyleName { get; set; }
+
+		public string CoolStyle { get; set; }
+		public string GoodStyle { get; set; }
+		public string SafeStyle { get; set; }
+		public string BadStyle { get; set; }
+		public string AwfulStyle { get; set; }
+		public string PRank { get; set; }
+		public string ERank { get; set; }
+		public string GRank{ get; set; }
+		public string SRank{ get; set; }
+		public string LRank { get; set; }
+		public string FRank { get; set; }
 	}
 
 	public class PDStatContext : DbContext
@@ -167,6 +177,7 @@ namespace PDStat
 		public DbSet<Difficulty> Difficulties { get; set; }
 		public DbSet<Rank> Ranks { get; set; }
 		public DbSet<PdStat> PDStats { get; set; }
+		public DbSet<ScoreStyle> ScoreStyle { get; set; }
 	}
 
 	class DbInitializer
@@ -183,6 +194,8 @@ namespace PDStat
 			context.Difficulties.Add(new Difficulty() { Id = 1, Name = "Normal" });
 			context.Difficulties.Add(new Difficulty() { Id = 2, Name = "Hard" });
 			context.Difficulties.Add(new Difficulty() { Id = 3, Name = "Extreme" });
+			context.Difficulties.Add(new Difficulty() { Id = 4, Name = "Edit" });
+			context.Difficulties.Add(new Difficulty() { Id = 5, Name = "Tutorial" });
 
 			context.Ranks.Add(new Rank() { Id = 6, Name = "Perfect" });
 			context.Ranks.Add(new Rank() { Id = 5, Name = "Excellent" });
@@ -204,6 +217,22 @@ namespace PDStat
 			context.Games.Add(new Game() { Id = 7, Name = Helpers.PDFP });
 			context.Games.Add(new Game() { Id = 8, Name = Helpers.PDF2V });
 			context.Games.Add(new Game() { Id = 9, Name = Helpers.PDF2P });
+
+			context.ScoreStyle.Add(new ScoreStyle() {
+				Id = 0, StyleName = "Japanese", CoolStyle = "COOL", GoodStyle = "FINE", SafeStyle = "SAFE",
+				BadStyle = "SAD", AwfulStyle = "WORST", PRank = "Perfect", ERank = "Excellent", GRank = "Great",
+				SRank = "Standard", LRank = "Cheap", FRank = "MISSxTAKE"
+			});
+			context.ScoreStyle.Add(new ScoreStyle() { 
+				Id = 1, StyleName = "English (F)", CoolStyle = "COOL", GoodStyle = "GOOD", SafeStyle = "SAFE",
+				BadStyle = "BAD", AwfulStyle = "AWFUL", PRank = "Perfect", ERank = "Excellent", GRank = "Great",
+				SRank = "Standard", LRank = "Lousy", FRank = "DROPxOUT"
+			});
+			context.ScoreStyle.Add(new ScoreStyle() {
+				Id = 2, StyleName = "English (F 2nd)", CoolStyle = "COOL", GoodStyle = "GOOD", SafeStyle = "SAFE",
+				BadStyle = "BAD", AwfulStyle = "MISS", PRank = "Perfect", ERank = "Excellent", GRank = "Great",
+				SRank = "Standard", LRank = "So Close", FRank = "DROPxOUT"
+			});
 			#endregion
 
 			string def = "Default";

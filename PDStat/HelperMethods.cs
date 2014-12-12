@@ -65,17 +65,17 @@ namespace PDStat
 			return (game == PDFV || game == PDFP || game == PDF2V || game == PDF2P);
 		}
 
-		public static readonly string PD1 = "Project Diva (1)";
-		public static readonly string PD2 = "Project Diva 2nd";
-		public static readonly string PDX = "Project Diva Extend";
+		public const string PD1 = "Project Diva (1)";
+		public const string PD2 = "Project Diva 2nd";
+		public const string PDX = "Project Diva Extend";
 
-		public static readonly string PDDT = "Project Diva DT";
-		public static readonly string PDDT2 = "Project Diva DT 2nd";
-		public static readonly string PDDTX = "Project Diva DT Extend";
+		public const string PDDT = "Project Diva DT";
+		public const string PDDT2 = "Project Diva DT 2nd";
+		public const string PDDTX = "Project Diva DT Extend";
 
-		public static readonly string PDFV = "Project Diva f (Vita)";
-		public static readonly string PDFP = "Project Diva F (PS3)";
-		public static readonly string PDF2V = "Project Diva f 2nd (Vita)";
-		public static readonly string PDF2P = "Project Diva F 2nd (PS3)";
+		public const string PDFV = "Project Diva f (Vita)";
+		public const string PDFP = "Project Diva F (PS3)";
+		public const string PDF2V = "Project Diva f 2nd (Vita)";
+		public const string PDF2P = "Project Diva F 2nd (PS3)";
 	}
 }
