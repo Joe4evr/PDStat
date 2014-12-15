@@ -310,7 +310,7 @@ namespace PDStat
 			short safes;
 			short bads;
 			short awfuls;
-			int score; //This can be nicely refactored only once C# 6 is out =(
+			int score; //Nevermind, declaration expressions apparently got cut for C# 6 ;__; Better luck for C# 7
 			if (Int16.TryParse(CoolBox.Text, out cools) && Int16.TryParse(GoodBox.Text, out goods) &&
 				Int16.TryParse(SafeBox.Text, out safes) && Int16.TryParse(BadBox.Text, out bads) &&
 				Int16.TryParse(AwfulBox.Text, out awfuls) && Int32.TryParse(ScoreBox.Text, out score))
