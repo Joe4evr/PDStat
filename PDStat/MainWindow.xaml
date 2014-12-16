@@ -11,8 +11,8 @@
 			<ComboBox x:Name="diffBox"   VerticalAlignment="Top" Width="160" HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,20,0,0" IsEnabled="False" SelectionChanged="diffBox_SelectionChanged"/>
 			<ComboBox x:Name="songBox"   VerticalAlignment="Top" Width="160" HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,20,0,0" IsEnabled="False" SelectionChanged="songBox_SelectionChanged"/>
 			<ComboBox x:Name="styleBox"  VerticalAlignment="Top" Width="170" HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,300,0,0" Background="{x:Null}" BorderBrush="Black" FontSize="16" FontFamily="Lucida Console" Loaded="styleBox_Loaded" SelectionChanged="styleBox_SelectionChanged"/>
-			<Button x:Name="manageEdits" VerticalAlignment="Top" Content="Manage Edit Songs" Height="23" Margin="61,96,20,0" DockPanel.Dock="Top" HorizontalAlignment="Center" Width="119" Click="manageEdits_Click"/>
-			<Label x:Name="debugLabel" Content="" Height="17" VerticalAlignment="Bottom" Width="56" HorizontalAlignment="Left" FontSize="10" VerticalContentAlignment="Bottom" Padding="2,0,0,2" Loaded="debugLabel_Loaded" Margin="0,0,0,9"/>
+			<Button x:Name="manageEdits" VerticalAlignment="Top" Content="Manage Edit Songs" Height="23" Margin="60,80,20,0" DockPanel.Dock="Top" HorizontalAlignment="Center" Width="120" Click="manageEdits_Click"/>
+			<Label x:Name="debugLabel" Content="" Height="18" VerticalAlignment="Bottom" Width="56" HorizontalAlignment="Left" Padding="0" Loaded="debugLabel_Loaded" Margin="0,-9,0,9"/>
 		</DockPanel>
 		<Label Content="Best Attempt"    HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,10,0,0" VerticalAlignment="Top" FontSize="24" Width="150"/>
 		<Label Content="Current Attempt" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="455,10,0,0" VerticalAlignment="Top" FontSize="24" Width="185" Grid.ColumnSpan="2"/>

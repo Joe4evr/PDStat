@@ -38,12 +38,13 @@ namespace PDStat
 
 		private void addEditButton_Click(object sender, RoutedEventArgs e)
 		{
-			if (editTitleBox.Text != null || editTitleBox.Text != String.Empty)
+			if (!String.IsNullOrEmpty(editTitleBox.Text))
 			{
 				using (PDStatContext db = new PDStatContext())
 				{
 					int i = db.Songs.OrderByDescending(s => s.Id).Select(s => s.Id).First();
-					db.Songs.Add(new Song() { Id = i++, Mode = "Edit", Game = gamesBox.SelectedItem.ToString(), Title = editTitleBox.Text});
+					Game G = db.Games.Where(s => s.Name == gamesBox.SelectedItem.ToString()).Select(s => s).First();
+					db.Songs.Add(new Song() { Id = i++, Mode = "Edit", g = G, Title = editTitleBox.Text});
 					db.SaveChanges();
 				}
 
@@ -70,13 +71,20 @@ namespace PDStat
 					try
 					{
 						editSongs = db.Songs.Where(s => s.Game == gamesBox.SelectedItem.ToString() && s.Mode == "Edit").OrderBy(s => s.Id).Select(s => s.Title).ToList();
-						existingEditSongs.ItemsSource = editSongs;
-						existingEditSongs.IsEnabled = true;
-						removeEditSongButton.IsEnabled = true;
+						if (editSongs.Count > 0)
+						{
+							existingEditSongs.ItemsSource = editSongs;
+							existingEditSongs.IsEnabled = true;
+							removeEditSongButton.IsEnabled = true;
+						}
+						else
+						{
+							existingEditSongs.IsEnabled = false;
+							removeEditSongButton.IsEnabled = false;
+						}
 					}
 					catch (InvalidOperationException)
 					{
-						existingEditSongs.ItemsSource = null;
 						existingEditSongs.IsEnabled = false;
 						removeEditSongButton.IsEnabled = false;
 					}
