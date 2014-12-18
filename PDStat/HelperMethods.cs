@@ -5,66 +5,8 @@ using System.Reflection;
 
 namespace PDStat
 {
-	public static class EnumHelper
-	{
-		//copied from http://blog.spontaneouspublicity.com/associating-strings-with-enums-in-c
-		public static string GetEnumDescription(Enum value)
-		{
-			FieldInfo fi = value.GetType().GetField(value.ToString());
-
-			DescriptionAttribute[] attributes =
-				(DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
-
-			if (attributes != null && attributes.Length > 0)
-				return attributes[0].Description;
-			else
-				return value.ToString();
-		}
-
-		public static List<T> EnumToList<T>()
-		{
-			Type enumType = typeof(T);
-
-			// Can't use generic type constraints on value types,
-			// so have to do check like this
-			if (enumType.BaseType != typeof(Enum))
-				throw new ArgumentException("T must be of type System.Enum");
-
-			Array enumValArray = Enum.GetValues(enumType);
-			List<T> enumValList = new List<T>(enumValArray.Length);
-
-			foreach (int val in enumValArray)
-			{
-				enumValList.Add((T)Enum.Parse(enumType, val.ToString()));
-			}
-
-			return enumValList;
-		}
-	}
-
 	public static class Helpers
 	{
-		//doesn't work?
-		public static string GetDescription<T>(T value)
-		{
-			FieldInfo fi = value.GetType().GetField(value.ToString());
-
-			if (fi == null) return value.ToString();
-
-			DescriptionAttribute[] attributes =
-				(DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
-
-			if (attributes != null && attributes.Length > 0)
-				return attributes[0].Description;
-			else
-				return value.ToString();
-		}
-
-		public static bool IsOfFFamily(string game)
-		{
-			return (game == PDFV || game == PDFP || game == PDF2V || game == PDF2P);
-		}
-
 		public const string PD1 = "Project Diva (1)";
 		public const string PD2 = "Project Diva 2nd";
 		public const string PDX = "Project Diva Extend";
@@ -77,5 +19,30 @@ namespace PDStat
 		public const string PDFP = "Project Diva F (PS3)";
 		public const string PDF2V = "Project Diva f 2nd (Vita)";
 		public const string PDF2P = "Project Diva F 2nd (PS3)";
+
+		public static bool IsOfFFamily(string game)
+		{
+			return (game == PDFV || game == PDFP || game == PDF2V || game == PDF2P);
+		}
+
+		public static string GetBestName(Song s, ScoreStyle style)
+		{
+			if (!String.IsNullOrEmpty(s.LocalizedTitle) && style.Id >= 3)
+			{
+				return s.LocalizedTitle;
+			}
+			else if (!String.IsNullOrEmpty(s.ENTitle) && style.Id >= 2)
+			{
+				return s.ENTitle;
+			}
+			else if (!String.IsNullOrEmpty(s.RomajiTitle) && style.Id >= 1)
+			{
+				return s.RomajiTitle;
+			}
+			else
+			{
+				return s.JPTitle;
+			}
+		}
 	}
 }

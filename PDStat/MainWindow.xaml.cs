@@ -25,15 +25,17 @@ namespace PDStat
 	public partial class MainWindow : Window
 	{
 		public static List<string> games = new List<string>();
-		List<string> songs;
+		Dictionary<string, int> songs;
 		List<string> diff;
+		Song currentSong;
+		ScoreStyle currentStyle;
 		int currentAttempt = 0;
 
 		public MainWindow()
 		{
 			InitializeComponent();
 
-			using (PDStatContext db = new PDStatContext()) { } //no-op for initializing
+			//using (PDStatContext db = new PDStatContext()) { } //no-op for initializing
 		}
 
 		private async void gamesBox_Loaded(object sender, RoutedEventArgs e)
@@ -92,7 +94,7 @@ namespace PDStat
 
 		private async void styleBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			await ChangeStyle();
+			await ChangeStyleAsync();
 		}
 
 		private void attemptCounter_Loaded(object sender, RoutedEventArgs e)
@@ -110,12 +112,14 @@ namespace PDStat
 		{
 			using (PDStatContext db = new PDStatContext())
 			{
+				int song;
+				songs.TryGetValue(songBox.SelectedItem.ToString(), out song);
 				db.PDStats.Add(new PdStat()
 				{
-					s = await (from s in db.Songs where s.Game == gamesBox.SelectedItem.ToString() && s.Title == songBox.SelectedItem.ToString() select s).FirstAsync(),
+					s = await (from s in db.Songs where s.Id == song select s).FirstAsync(),
 					diff = await (from d in db.Difficulties where d.Name == diffBox.SelectedItem.ToString() select d).FirstAsync(),
 					Attempt = currentAttempt,
-					Date = DateTime.Today.Date,
+					Date = DateTime.Now,
 					Cool = 0,
 					Good = 0,
 					Safe = 0,
@@ -137,7 +141,7 @@ namespace PDStat
 		{
 			ManageEditSongs mes = new ManageEditSongs();
 			mes.ShowDialog();
-			await ReloadSongs();
+			await ReloadSongsAsync();
 		}
 
 		private void AwfulBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -155,6 +159,7 @@ namespace PDStat
 					TZ2Chk.IsChecked = true;
 				}
 				rankBox.SelectedItem = "Perfect";
+				comboBox.Text = (c + g).ToString();
 			}
 		}
 
@@ -183,13 +188,14 @@ namespace PDStat
 			TZ1Chk.IsChecked = false;
 			TZ2Chk.IsChecked = false;
 
+			comboBox.Text = String.Empty;
 			ScoreBox.Text = String.Empty;
 		}
 
 		private async Task GamesBoxChangedAsync()
 		{
 			diff = new List<string>();
-			songs = new List<string>();
+			songs = new Dictionary<string,int>();
 
 			using (PDStatContext db = new PDStatContext())
 			{
@@ -197,9 +203,13 @@ namespace PDStat
 				{
 					diff.Add(d.Name);
 				}
-				foreach (var s in await db.Songs.OrderBy(s => s.Id).Where(s => s.Game == gamesBox.SelectedItem.ToString()).Select(s => s.Title).ToListAsync())
+
+				if (songBox.SelectedItem != null)
 				{
-					songs.Add(s);
+					foreach (var s in await db.Songs.OrderBy(s => s.Id).Where(s => s.Game == gamesBox.SelectedItem.ToString()).Select(s => s).ToListAsync())
+					{
+						songs.Add(Helpers.GetBestName(s, currentStyle), s.Id);
+					}
 				}
 			}
 
@@ -211,11 +221,18 @@ namespace PDStat
 
 			if (styleBox.SelectedItem != null && styleBox.SelectedItem.ToString() == "Auto")
 			{
-				await ChangeStyle();
+				await ChangeStyleAsync();
 			}
 
 			diffBox.ItemsSource = diff;
-			diffBox.IsEnabled = true;
+			if (!diffBox.IsEnabled)
+			{
+				diffBox.IsEnabled = true;
+			}
+			//else
+			//{
+			//	await ReloadSongsAsync();
+			//}
 			await LoadBestAttemptAsync();
 		}
 
@@ -238,21 +255,23 @@ namespace PDStat
 				TZ2Chk.IsEnabled = false;
 			}
 
-			await ReloadSongs();
+			await ReloadSongsAsync();
 			songBox.IsEnabled = true;
 			await LoadBestAttemptAsync();
 		}
 
 		private async Task LoadBestAttemptAsync()
 		{
-			using (PDStatContext db = new PDStatContext())
+			if (gamesBox.SelectedItem != null && diffBox.SelectedItem != null && songBox.SelectedItem != null)
 			{
-				if (gamesBox.SelectedItem != null && diffBox.SelectedItem != null && songBox.SelectedItem != null)
+				using (PDStatContext db = new PDStatContext())
 				{
-					int song = await (from s in db.Songs where s.Game == gamesBox.SelectedItem.ToString() && s.Title == songBox.SelectedItem.ToString() select s.Id).FirstAsync();
+					int song;
+					songs.TryGetValue(songBox.SelectedItem.ToString(), out song);
+					currentSong = await (from s in db.Songs where s.Id == song select s).FirstAsync();
 					try
 					{
-						PdStat stat = await (from s in db.PDStats where s.Song == song && s.Difficulty == diffBox.SelectedItem.ToString() select s).OrderByDescending(s => s.Score).FirstAsync();
+						PdStat stat = await (from st in db.PDStats where st.s.Id == currentSong.Id && st.Difficulty == diffBox.SelectedItem.ToString() select st).OrderByDescending(s => s.Score).FirstAsync();
 					
 						bestCool.Content = stat.Cool;
 						bestGood.Content = stat.Good;
@@ -274,11 +293,12 @@ namespace PDStat
 						}
 						bestScore.Content = stat.Score;
 						bestRank.Content = stat.Rank;
+						bestCombo.Content = stat.BestCombo;
 
 						PdStat s2 = await (from s in db.PDStats where s.Song == song && s.Difficulty == stat.Difficulty select s).OrderByDescending(s => s.Attempt).FirstAsync();
 						currentAttempt = s2.Attempt;
 					}
-					catch (InvalidOperationException)
+					catch (Exception)
 					{
 						bestCool.Content = String.Empty;
 						bestGood.Content = String.Empty;
@@ -292,6 +312,7 @@ namespace PDStat
 
 						bestScore.Content = String.Empty;
 						bestRank.Content = String.Empty;
+						bestCombo.Content = String.Empty;
 
 						currentAttempt = 0;
 					}
@@ -310,19 +331,22 @@ namespace PDStat
 			short safes;
 			short bads;
 			short awfuls;
+			short combo;
 			int score; //Nevermind, declaration expressions apparently got cut for C# 6 ;__; Better luck for C# 7
 			if (Int16.TryParse(CoolBox.Text, out cools) && Int16.TryParse(GoodBox.Text, out goods) &&
 				Int16.TryParse(SafeBox.Text, out safes) && Int16.TryParse(BadBox.Text, out bads) &&
-				Int16.TryParse(AwfulBox.Text, out awfuls) && Int32.TryParse(ScoreBox.Text, out score))
+				Int16.TryParse(AwfulBox.Text, out awfuls) && Int16.TryParse(comboBox.Text, out combo) && Int32.TryParse(ScoreBox.Text, out score))
 			{
 				using (PDStatContext db = new PDStatContext())
 				{
+					//int song;
+					//songs.TryGetValue(songBox.SelectedItem.ToString(), out song);
 					PdStat stat = db.PDStats.Add(new PdStat()
 					{
-						s = await (from s in db.Songs where s.Game == gamesBox.SelectedItem.ToString() && s.Title == songBox.SelectedItem.ToString() select s).FirstAsync(),
+						s = await (from s in db.Songs where s.Id == currentSong.Id select s).FirstAsync(),
 						diff = await (from d in db.Difficulties where d.Name == diffBox.SelectedItem.ToString() select d).FirstAsync(),
 						Attempt = currentAttempt,
-						Date = DateTime.Today.Date,
+						Date = DateTime.Now,
 						Cool = cools,
 						Good = goods,
 						Safe = safes,
@@ -333,6 +357,7 @@ namespace PDStat
 						TechZoneBonus2 = TZ2Chk.IsChecked ?? false,
 						Score = score,
 						r = await (from ra in db.Ranks where ra.Name == rankBox.SelectedItem.ToString() select ra).FirstAsync(),
+						BestCombo = combo,
 					});
 
 					try
@@ -355,24 +380,25 @@ namespace PDStat
 			SubmitBtn.IsEnabled = true;
 		}
 
-		private async Task ReloadSongs()
+		private async Task ReloadSongsAsync()
 		{
-			songs = new List<string>();
+			songs = new Dictionary<string,int>();
 
 			string mode = (diffBox.SelectedItem != null && (diffBox.SelectedItem.ToString() == "Tutorial" || diffBox.SelectedItem.ToString() == "Edit")) ? diffBox.SelectedItem.ToString() : "Default";
 
 			using (PDStatContext db = new PDStatContext())
 			{
-				foreach (var s in await db.Songs.Where(g => g.Game == gamesBox.SelectedItem.ToString() && g.Mode == mode).OrderBy(s => s.Id).ToListAsync())
+				var _songs = await db.Songs.Where(g => g.Game == gamesBox.SelectedItem.ToString() && g.Mode == mode).ToListAsync();
+				foreach (var s in _songs)
 				{
-					songs.Add(s.Title);
+					songs.Add(Helpers.GetBestName(s, currentStyle), s.Id);
 				}
 			}
 
-			songBox.ItemsSource = songs;
+			songBox.ItemsSource = songs.Keys;
 		}
 
-		private async Task ChangeStyle()
+		private async Task ChangeStyleAsync()
 		{
 			string selection = styleBox.SelectedItem.ToString();
 			if (selection == "Auto")
@@ -381,11 +407,11 @@ namespace PDStat
 				{
 					case Helpers.PDFV:
 					case Helpers.PDFP:
-						selection = "English (F)";
+						selection = "Localized (F)";
 						break;
 					case Helpers.PDF2V:
 					case Helpers.PDF2P:
-						selection = "English (F 2nd)";
+						selection = "Localized (F 2nd)";
 						break;
 					default:
 						selection = "Japanese";
@@ -393,26 +419,26 @@ namespace PDStat
 				}
 			}
 			
-			
-			ScoreStyle ss;
 			using (PDStatContext db = new PDStatContext())
 			{
-				ss = await (from s in db.ScoreStyle where s.StyleName == selection select s).FirstAsync();
+				currentStyle = await (from s in db.ScoreStyle where s.StyleName == selection select s).FirstAsync();
 			}
-			coolLabel.Content = ss.CoolStyle;
-			goodLabel.Content = ss.GoodStyle;
-			safeLabel.Content = ss.SafeStyle;
-			badLabel.Content = ss.BadStyle;
-			awfulLabel.Content = ss.AwfulStyle;
+			coolLabel.Content = currentStyle.CoolStyle;
+			goodLabel.Content = currentStyle.GoodStyle;
+			safeLabel.Content = currentStyle.SafeStyle;
+			badLabel.Content = currentStyle.BadStyle;
+			awfulLabel.Content = currentStyle.AwfulStyle;
 			
 			List<string> ranks = new List<string>();
-			ranks.Add(ss.FRank);
-			ranks.Add(ss.LRank);
-			ranks.Add(ss.SRank);
-			ranks.Add(ss.GRank);
-			ranks.Add(ss.ERank);
-			ranks.Add(ss.PRank);
+			ranks.Add(currentStyle.FRank);
+			ranks.Add(currentStyle.LRank);
+			ranks.Add(currentStyle.SRank);
+			ranks.Add(currentStyle.GRank);
+			ranks.Add(currentStyle.ERank);
+			ranks.Add(currentStyle.PRank);
 			rankBox.ItemsSource = ranks;
+
+			await ReloadSongsAsync();
 		}
 	}
 }

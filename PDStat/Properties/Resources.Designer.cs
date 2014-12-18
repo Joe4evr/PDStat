@@ -85,70 +85,460 @@ namespace PDStat.Properties {
         ///The Rebel
         ///Love is War
         ///That One Second Slow Motion
-        ///Melt
-        ///Far Away
-        ///Strobo Nights
-        ///Star Story
-        ///Last Night, Good Night
-        ///packaged
+        ///
+        ///
+        ///
+        ///
+        ///
+        ///
         ///Sweet*Drops After The Rain
-        ///Miracle Paint
+        ///
         ///Bad Mood Waltz
-        ///Marginal
+        ///
         ///Dreaming Leaf -Dreaming Words-
         ///Song of Wastelands, Forests and Magic
-        ///White Dove
-        ///moon
+        ///Pigeon
+        ///
         ///Beware of Miku Miku Bacteria♪
         ///Song of Life
-        ///The Secret Garden
-        ///Dear Cocoa Girls
-        ///Velvet Arabesque
+        ///
+        ///
+        ///
         ///Updating Your Love List?
         ///Rain of Cherry Blossoms -standard edit-
         ///VOC@LOID in Love
         ///Ievan Polkka
-        ///Your Diva        /// [rest of string was truncated]&quot;;.
+        ///Your Diva
+        ///
+        ///Disappearance of Hatsune Miku
+        ///Golden Holy Night Rotting into the Frost and Snow
+        ///I&apos;ll Make You Miku-Miku-ed♪.
         /// </summary>
-        internal static string PD1 {
+        internal static string PD1EN {
             get {
-                return ResourceManager.GetString("PD1", resourceCulture);
+                return ResourceManager.GetString("PD1EN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ワールドイズマイン
+        ///ひねくれ者
+        ///恋は戦争
+        ///その一秒スローモーション
+        ///メルト
+        ///Far Away
+        ///ストロボナイツ
+        ///Star Story
+        ///Last Night, Good Night	
+        ///packaged
+        ///雨のちSweet*Drops
+        ///ミラクルペイント
+        ///フキゲンワルツ
+        ///マージナル
+        ///Dreaming Leaf -ユメミルコトノハ-
+        ///荒野と森と魔法の歌
+        ///ハト
+        ///moon
+        ///みくみく菌にご注意♪
+        ///いのちの歌
+        ///The Secret Garden
+        ///Dear Cocoa Girls
+        ///天鵞絨アラベスク
+        ///ラブリスト更新中？
+        ///桜ノ雨 -standard edit-
+        ///恋スルＶＯＣ＠ＬＯＩＤ
+        ///Ievan Polkka
+        ///あなたの歌姫
+        ///えれくとりっく・えんじぇぅ
+        ///初音ミクの消失
+        ///金の聖夜霜雪に朽ちて
+        ///みくみくにしてあげる♪【してやんよ】.
+        /// </summary>
+        internal static string PD1JP {
+            get {
+                return ResourceManager.GetString("PD1JP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Waarudo Izu Main
+        ///Hinekure Mono
+        ///Koi wa Sensou
+        ///Sono Ichibyuo Slow Motion
+        ///Melt
+        ///
+        ///Strobo Nights
+        ///
+        ///
+        ///
+        ///Ame Nochi Sweet*Drops
+        ///Miracle Paint
+        ///Fukigen Waltz
+        ///Marginal
+        ///Dreaming Leaf (-Yume Miru Kotonoha-)
+        ///Kouya to Mori to Mahou no Uta
+        ///Hato
+        ///
+        ///Miku Miku-kin ni Gochuui♪
+        ///Inochi no Uta
+        ///
+        ///
+        ///Velvet Arabesque
+        ///LOVE LIST Koushinchuu?
+        ///Sakura no Ame -standard edit-
+        ///Koisuru VOC@LOID
+        ///
+        ///Anata no Utahime
+        ///Electric・Angel
+        ///Hatsune Miku no Shoushitsu -DEAD END-
+        ///Kogane no Seiya Sousetsu ni Kuchite
+        ///Miku Miku ni Shite  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string PD1RO {
+            get {
+                return ResourceManager.GetString("PD1RO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Romeo and Cinderella
+        ///
+        ///Love Words
+        ///
+        ///Heart
+        ///
+        ///Butterfly on Your Right Shoulder
+        ///
+        ///
+        ///
+        ///
+        ///
+        ///
+        ///Updating Your Love List?
+        ///
+        ///Song of Life
+        ///
+        ///
+        ///
+        ///When the First Love Ends
+        ///Song of Wastelands, Forests, and Magic
+        ///
+        ///Gigantic Girl
+        ///
+        ///
+        ///
+        ///World is Mine
+        ///
+        ///
+        ///
+        ///
+        ///Nuclear Reactor (Meltdown)
+        ///I Understand the Truth
+        ///
+        ///Love-Colored Ward
+        ///
+        ///
+        ///Beware of the Miku Miku Bacteria♪
+        ///The First Melody
+        ///Pidgeon
+        ///The Farthest Place
+        ///Look this Way, Baby
+        ///
+        ///
+        ///I&apos;ll Make You Miku-Miku-ed♪
+        ///The Intense Singing of Miku .
+        /// </summary>
+        internal static string PD2EN {
+            get {
+                return ResourceManager.GetString("PD2EN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ロミオとシンデレラ
+        ///magnet
+        ///愛言葉
+        ///サウンド
+        ///ココロ
+        ///Packaged
+        ///右肩の蝶
+        ///マージナル
+        ///The secret garden
+        ///Just Be Friends
+        ///ストロボナイツ
+        ///クローバー♣クラブ
+        ///from Y to Y
+        ///ラブリスト更新中？
+        ///Yellow
+        ///いのちの歌
+        ///Change me
+        ///ぽっぴっぽー
+        ///カンタレラ
+        ///初めての恋が終わる時
+        ///荒野と森と魔法の歌
+        ///Dear cocoa girls
+        ///巨大少女
+        ///Dear
+        ///ジェミニ
+        ///VOiCE -DIVA MIX-
+        ///ワールドイズマイン
+        ///ミラクルペイント
+        ///moon
+        ///天鵞絨アラベスク
+        ///Innocence
+        ///炉心融解
+        ///ほんとは分かってる
+        ///メルト
+        ///恋色病棟
+        ///ファインダー (DSLR remix‐re:edit)
+        ///Promise
+        ///みくみく菌にご注意♪
+        ///ハジメテノオト
+        ///ハト
+        ///サイハテ
+        ///こっち向いて Baby
+        ///ラフル×メロディ
+        ///ダブルラリアット
+        ///みくみくにしてあげる♪
+        ///初音ミクの激唱.
+        /// </summary>
+        internal static string PD2JP {
+            get {
+                return ResourceManager.GetString("PD2JP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Romeo to Cinderella
+        ///
+        ///Ai Kotoba
+        ///sound
+        ///Kokoro
+        ///
+        ///Migikata no Chou
+        ///Marginal
+        ///
+        ///
+        ///Strobe Nights
+        ///Clover♣Club
+        ///
+        ///LOVE LIST Koushinchuu?
+        ///
+        ///Inochi no Uta
+        ///
+        ///Po Pi Po
+        ///Cantarella
+        ///Hajimete no Koi ga Owaru Toki
+        ///Kouya to Mori to Mahou no Uta
+        ///
+        ///Kyodai Shoujo
+        ///
+        ///Gemini
+        ///
+        ///Waarudo Izu Main
+        ///Miracle Paint
+        ///
+        ///Velvet Arabesque
+        ///
+        ///Roshin Yuukai
+        ///Honto wa Wakatteru
+        ///Melt
+        ///Koi Iro Byoutou
+        ///finder (DSLR remix‐re:edit)
+        ///
+        ///Miku Miku-kin ni Gochuui♪
+        ///Hajimete no Oto
+        ///Hato
+        ///Saihate
+        ///Kocchi Muite Baby
+        ///Colorful x Melody
+        ///Do [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string PD2RO {
+            get {
+                return ResourceManager.GetString("PD2RO", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        internal static string PD2 {
+        internal static string PDF2EN {
             get {
-                return ResourceManager.GetString("PD2", resourceCulture);
+                return ResourceManager.GetString("PDF2EN", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        internal static string PDF {
+        internal static string PDF2JP {
             get {
-                return ResourceManager.GetString("PDF", resourceCulture);
+                return ResourceManager.GetString("PDF2JP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Melt
+        ///Akatsuki Arrival
+        ///Packaged
+        ///Glory 3usi9
+        ///Two Breaths Walking
+        ///(Pair of) Wintry Winds
+        ///Love-Hate
+        ///Clover Club
+        ///Miracle Paint
+        ///Pinky Swear
+        ///Colorful x Melody
+        ///Blackjack
+        ///Clockwork Clown
+        ///Thousand Year Solo
+        ///Doubleganger
+        ///Roushin Yukai -Meltdown-
+        ///Luka Luka Night Fever
+        ///Knife
+        ///Sakura Rain
+        ///This is the Happiness and Pease of Mind Committee
+        ///Cantarella ~Grace Edition~
+        ///SPiCa -39&apos;s Giving Day Edition-
+        ///Hello, Worker
+        ///Romeo and Cinderalla
+        ///I&apos;ll Miku Miku You (For Reals)
+        ///Meteor
+        ///Kokoro
+        ///Break It, Break It
+        ///s [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string PDF2Loc {
+            get {
+                return ResourceManager.GetString("PDF2Loc", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        internal static string PDF2 {
+        internal static string PDF2RO {
             get {
-                return ResourceManager.GetString("PDF2", resourceCulture);
+                return ResourceManager.GetString("PDF2RO", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        internal static string PDX {
+        internal static string PDFEN {
             get {
-                return ResourceManager.GetString("PDX", resourceCulture);
+                return ResourceManager.GetString("PDFEN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string PDFJP {
+            get {
+                return ResourceManager.GetString("PDFJP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cat Food
+        ///Secret Police
+        ///Melancholic
+        ///Weekender Girl
+        ///Time Machine
+        ///DYE
+        ///Fire Flower
+        ///ACUTE
+        ///Urbandonment
+        ///Stay With Me
+        ///Hm? Ah, Yes.
+        ///Remote Controller
+        ///Ashes to Ashes
+        ///World&apos;s End Umbrella
+        ///Freely Tomorrow
+        ///Monochrome Blue Sky
+        ///Glasses
+        ///Kagamine HachiHachi Flower Fight
+        ///World&apos;s End Dance Hall
+        ///Net Game Addicts Sprechchor
+        ///Nostalogic
+        ///Nyanyanyanyanyanya!
+        ///Unhappy Refrain
+        ///Odds &amp; Ends
+        ///Tengaku
+        ///God-Tier Tune
+        ///Black Rock Shooter
+        ///Negaposi*Continues
+        ///Sadistic Music Factory
+        ///Continuing Dream
+        ///Tell Your World
+        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string PDFLoc {
+            get {
+                return ResourceManager.GetString("PDFLoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string PDFRO {
+            get {
+                return ResourceManager.GetString("PDFRO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cat Ears Switch
+        ///End of Solitude
+        ///Palette
+        ///SPiCa -39&apos;s Giving Day Edition-
+        ///Starduster
+        ///To Beyond a Duodecillion
+        ///Stardust Utopia
+        ///Time Limit
+        ///Though a Song is Formless
+        ///Roushin Yukai -Meltdown-
+        ///Electric Angel
+        ///Yellow
+        ///Thousand Year Solo
+        ///Butterfly On Your Right Shoulder -39&apos;s Giving Day Edition-
+        ///Your Diva
+        ///Puzzle
+        ///Lovers Suicide in Oblivion
+        ///Rin Rin Signal -Append Mix-
+        ///Just Be Friends
+        ///melody...
+        ///Pair of Wintry Winds
+        ///Colorful x Melody
+        ///Luka Luka★Night Fever
+        ///StargazeR
+        ///Golden Holy Night Rotting into th [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string PDXEN {
+            get {
+                return ResourceManager.GetString("PDXEN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string PDXJP {
+            get {
+                return ResourceManager.GetString("PDXJP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string PDXRO {
+            get {
+                return ResourceManager.GetString("PDXRO", resourceCulture);
             }
         }
     }

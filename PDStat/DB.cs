@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
+using System.Linq;
 
 namespace PDStat
 {
@@ -18,7 +19,16 @@ namespace PDStat
 		public string Game { get; set; }
 
 		[StringLength(150)]
-		public string Title { get; set; }
+		public string JPTitle { get; set; }
+
+		[StringLength(150)]
+		public string RomajiTitle { get; set; }
+
+		[StringLength(150)]
+		public string ENTitle { get; set; }
+
+		[StringLength(150)]
+		public string LocalizedTitle { get; set; }
 
 		[ForeignKey("Game")]
 		public virtual Game g { get; set; }
@@ -168,6 +178,33 @@ namespace PDStat
 				}
 			}
 
+			if (entityEntry.Entity is Song)
+			{
+				Song song = (Song)entityEntry.Entity;
+				DbValidationError dve;
+
+				if (song.Mode == "Edit")
+				{
+					List<Song> ls = new List<Song>();
+					using (PDStatContext db = new PDStatContext())
+					{
+						try 
+						{	        
+							ls = (from s in db.Songs where s.Game == song.Game && s.JPTitle == song.JPTitle select s).ToList();
+						}
+						catch (InvalidOperationException)
+						{
+						}
+					}
+
+					if (ls.Count > 0)
+					{
+						dve = new DbValidationError("Song title","An Edit song with that name already exists for that game. Please enter a different name.");
+						Errors.ValidationErrors.Add(dve);
+					}
+				}
+			}
+
 			return (Errors.ValidationErrors.Count > 0) ? Errors : base.ValidateEntity(entityEntry, items);
 		}
 
@@ -223,13 +260,25 @@ namespace PDStat
 				BadStyle = "SAD", AwfulStyle = "WORST", PRank = "Perfect", ERank = "Excellent", GRank = "Great",
 				SRank = "Standard", LRank = "Cheap", FRank = "MISSxTAKE"
 			});
+			context.ScoreStyle.Add(new ScoreStyle()
+			{
+				Id = 1, StyleName = "Romaji", CoolStyle = "COOL", GoodStyle = "FINE", SafeStyle = "SAFE",
+				BadStyle = "SAD", AwfulStyle = "WORST", PRank = "Perfect", ERank = "Excellent", GRank = "Great",
+				SRank = "Standard", LRank = "Cheap", FRank = "MISSxTAKE"
+			});
+			context.ScoreStyle.Add(new ScoreStyle()
+			{
+				Id = 2, StyleName = "English", CoolStyle = "COOL", GoodStyle = "FINE", SafeStyle = "SAFE",
+				BadStyle = "SAD", AwfulStyle = "WORST", PRank = "Perfect", ERank = "Excellent", GRank = "Great",
+				SRank = "Standard", LRank = "Cheap", FRank = "MISSxTAKE"
+			});
 			context.ScoreStyle.Add(new ScoreStyle() { 
-				Id = 1, StyleName = "English (F)", CoolStyle = "COOL", GoodStyle = "GOOD", SafeStyle = "SAFE",
+				Id = 3, StyleName = "Localized (F)", CoolStyle = "COOL", GoodStyle = "GOOD", SafeStyle = "SAFE",
 				BadStyle = "BAD", AwfulStyle = "AWFUL", PRank = "Perfect", ERank = "Excellent", GRank = "Great",
 				SRank = "Standard", LRank = "Lousy", FRank = "DROPxOUT"
 			});
 			context.ScoreStyle.Add(new ScoreStyle() {
-				Id = 2, StyleName = "English (F 2nd)", CoolStyle = "COOL", GoodStyle = "GOOD", SafeStyle = "SAFE",
+				Id = 4, StyleName = "Localized (F 2nd)", CoolStyle = "COOL", GoodStyle = "GOOD", SafeStyle = "SAFE",
 				BadStyle = "BAD", AwfulStyle = "MISS", PRank = "Perfect", ERank = "Excellent", GRank = "Great",
 				SRank = "Standard", LRank = "So Close", FRank = "DROPxOUT"
 			});
@@ -240,50 +289,147 @@ namespace PDStat
 			string ip = "Ievan Polkka";
 
 			int i = 0;
-			string[] pd1songs = PDStat.Properties.Resources.PD1.Split('\n');
-			foreach (string s in pd1songs)
-			{
-				context.Songs.Add(new Song() { Id = i++, Mode = def, Game = Helpers.PD1, Title = s.Trim() });
-				context.Songs.Add(new Song() { Id = i++, Mode = def, Game = Helpers.PDDT, Title = s.Trim() });
-			}
 
-			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PD2, Title = ip });
-			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDDT2, Title = ip });
-			string[] pd2songs = PDStat.Properties.Resources.PD2.Split('\n');
-			foreach (string s in pd2songs)
+			#region PD1
+			string[] pd1songsJP = PDStat.Properties.Resources.PD1JP.Split('\n');
+			string[] pd1songsRO = PDStat.Properties.Resources.PD1RO.Split('\n');
+			string[] pd1songsEN = PDStat.Properties.Resources.PD1EN.Split('\n');
+			for (int s = 0; s < pd1songsJP.Length; s++)
 			{
-				context.Songs.Add(new Song() { Id = i++, Mode = def, Game = Helpers.PD2, Title = s.Trim() });
-				context.Songs.Add(new Song() { Id = i++, Mode = def, Game = Helpers.PDDT2, Title = s.Trim() });
+				context.Songs.Add(new Song() {
+					Id = i++, 
+					Mode = def, 
+					Game = Helpers.PD1, 
+					JPTitle = pd1songsJP[s].Trim(), 
+					RomajiTitle = pd1songsRO[s].Trim(), 
+					ENTitle = pd1songsEN[s].Trim()
+				});
+				context.Songs.Add(new Song() {
+					Id = i++, 
+					Mode = def, 
+					Game = Helpers.PDDT, 
+					JPTitle = pd1songsJP[s].Trim(), 
+					RomajiTitle = pd1songsRO[s].Trim(), 
+					ENTitle = pd1songsEN[s].Trim()
+				});
 			}
+			#endregion
 
-			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDX, Title = ip });
-			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDDTX, Title = ip });
-			string[] pdXsongs = PDStat.Properties.Resources.PDX.Split('\n');
-			foreach (string s in pdXsongs)
+			#region PD2
+			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PD2, JPTitle = ip });
+			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDDT2, JPTitle = ip });
+			string[] pd2songsJP = PDStat.Properties.Resources.PD2JP.Split('\n');
+			string[] pd2songsRO = PDStat.Properties.Resources.PD2RO.Split('\n');
+			string[] pd2songsEN = PDStat.Properties.Resources.PD2EN.Split('\n');
+			for (int s = 0; s < pd2songsJP.Length; s++)
 			{
-				context.Songs.Add(new Song() { Id = i++, Mode = def, Game = Helpers.PDX, Title = s.Trim() });
-				context.Songs.Add(new Song() { Id = i++, Mode = def, Game = Helpers.PDDTX, Title = s.Trim() });
+				context.Songs.Add(new Song() {
+					Id = i++,
+					Mode = def,
+					Game = Helpers.PD2,
+					JPTitle = pd2songsJP[s].Trim(),
+					RomajiTitle = pd2songsRO[s].Trim(),
+					ENTitle = pd2songsEN[s].Trim()
+				});
+				context.Songs.Add(new Song() {
+					Id = i++,
+					Mode = def,
+					Game = Helpers.PDDT2,
+					JPTitle = pd2songsJP[s].Trim(),
+					RomajiTitle = pd2songsRO[s].Trim(),
+					ENTitle = pd2songsEN[s].Trim()
+				});
 			}
+			#endregion
+			
+			#region PDX
+			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDX, JPTitle = ip });
+			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDDTX, JPTitle = ip });
+			string[] pdXsongsJP = PDStat.Properties.Resources.PDXJP.Split('\n');
+			string[] pdXsongsRO = PDStat.Properties.Resources.PDXRO.Split('\n');
+			string[] pdXsongsEN = PDStat.Properties.Resources.PDXEN.Split('\n');
+			for (int s = 0; s < pdXsongsJP.Length; s++)
+			{
+				context.Songs.Add(new Song() {
+					Id = i++,
+					Mode = def,
+					Game = Helpers.PDX,
+					JPTitle = pdXsongsJP[s].Trim(),
+					RomajiTitle = pdXsongsRO[s].Trim(),
+					ENTitle = pdXsongsEN[s].Trim()
+				});
+				context.Songs.Add(new Song() {
+					Id = i++,
+					Mode = def,
+					Game = Helpers.PDDTX,
+					JPTitle = pdXsongsJP[s].Trim(),
+					RomajiTitle = pdXsongsRO[s].Trim(),
+					ENTitle = pdXsongsEN[s].Trim()
+				});
+			}
+			#endregion
+			
+			#region PDF
+			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDFV, JPTitle = ip });
+			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDFP, JPTitle = ip });
+			string[] pdFsongsJP = PDStat.Properties.Resources.PDFJP.Split('\n');
+			string[] pdFsongsRO = PDStat.Properties.Resources.PDFRO.Split('\n');
+			string[] pdFsongsEN = PDStat.Properties.Resources.PDFEN.Split('\n');
+			string[] pdFsongsLoc = PDStat.Properties.Resources.PDFLoc.Split('\n');
+			for (int s = 0; s < pdFsongsJP.Length; s++)
+			{
+				context.Songs.Add(new Song() {
+					Id = i++,
+					Mode = def,
+					Game = Helpers.PDFV,
+					JPTitle = pdFsongsJP[s].Trim(),
+					RomajiTitle = pdFsongsRO[s].Trim(),
+					ENTitle = pdFsongsEN[s].Trim(),
+					LocalizedTitle = pdFsongsLoc[s].Trim()
+				});
+				context.Songs.Add(new Song() {
+					Id = i++,
+					Mode = def,
+					Game = Helpers.PDFP,
+					JPTitle = pdFsongsJP[s].Trim(),
+					RomajiTitle = pdFsongsRO[s].Trim(),
+					ENTitle = pdFsongsEN[s].Trim(),
+					LocalizedTitle = pdFsongsLoc[s].Trim()
+				});
+			}
+			#endregion
 
-			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDFV, Title = ip });
-			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDFP, Title = ip });
-			string[] pdFsongs = PDStat.Properties.Resources.PDF.Split('\n');
-			foreach (string s in pdFsongs)
+			#region PDF2
+			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDF2V, JPTitle = ip });
+			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDF2P, JPTitle = ip });
+			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDF2V, JPTitle = ip + " (Extreme)" });
+			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDF2P, JPTitle = ip + " (Extreme)" });
+			string[] pdF2songsJP = PDStat.Properties.Resources.PDF2JP.Split('\n');
+			string[] pdF2songsRO = PDStat.Properties.Resources.PDF2RO.Split('\n');
+			string[] pdF2songsEN = PDStat.Properties.Resources.PDF2EN.Split('\n');
+			string[] pdF2songsLoc = PDStat.Properties.Resources.PDF2Loc.Split('\n');
+			for (int s = 0; s < pdF2songsJP.Length; s++)
 			{
-				context.Songs.Add(new Song() { Id = i++, Mode = def, Game = Helpers.PDFV, Title = s.Trim() });
-				context.Songs.Add(new Song() { Id = i++, Mode = def, Game = Helpers.PDFP, Title = s.Trim() });
+				context.Songs.Add(new Song() {
+					Id = i++,
+					Mode = def,
+					Game = Helpers.PDF2V,
+					JPTitle = pdF2songsJP[s].Trim(),
+					RomajiTitle = pdF2songsRO[s].Trim(),
+					ENTitle = pdF2songsEN[s].Trim(),
+					LocalizedTitle = pdF2songsLoc[s].Trim()
+				});
+				context.Songs.Add(new Song() {
+					Id = i++,
+					Mode = def,
+					Game = Helpers.PDF2P,
+					JPTitle = pdF2songsJP[s].Trim(),
+					RomajiTitle = pdF2songsRO[s].Trim(),
+					ENTitle = pdF2songsEN[s].Trim(),
+					LocalizedTitle = pdF2songsLoc[s].Trim()
+				});
 			}
-
-			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDF2V, Title = ip });
-			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDF2P, Title = ip });
-			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDF2V, Title = ip + " (Extreme)" });
-			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDF2P, Title = ip + " (Extreme)" });
-			string[] pdF2songs = PDStat.Properties.Resources.PDF2.Split('\n');
-			foreach (string s in pdF2songs)
-			{
-				context.Songs.Add(new Song() { Id = i++, Mode = def, Game = Helpers.PDF2V, Title = s.Trim() });
-				context.Songs.Add(new Song() { Id = i++, Mode = def, Game = Helpers.PDF2P, Title = s.Trim() });
-			}
+			#endregion
 
 			base.Seed(context);
 		}

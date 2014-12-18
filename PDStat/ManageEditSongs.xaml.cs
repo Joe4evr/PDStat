@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 
 namespace PDStat
 {
@@ -44,8 +45,21 @@ namespace PDStat
 				{
 					int i = db.Songs.OrderByDescending(s => s.Id).Select(s => s.Id).First();
 					Game G = db.Games.Where(s => s.Name == gamesBox.SelectedItem.ToString()).Select(s => s).First();
-					db.Songs.Add(new Song() { Id = i++, Mode = "Edit", g = G, Title = editTitleBox.Text});
-					db.SaveChanges();
+					db.Songs.Add(new Song() { Id = i++, Mode = "Edit", g = G, JPTitle = editTitleBox.Text});
+
+					try
+					{
+						db.SaveChanges();
+					}
+					catch (DbEntityValidationException)
+					{
+						List<DbEntityValidationResult> err = db.GetValidationErrors().ToList();
+						MessageBoxResult d = System.Windows.MessageBoxResult.None;
+						do
+						{
+							d = System.Windows.MessageBox.Show(err.First().ValidationErrors.First().ErrorMessage, "Invalid song submitted", MessageBoxButton.OK);
+						} while (d != System.Windows.MessageBoxResult.OK);
+					}
 				}
 
 				LoadEditSongs();
@@ -56,7 +70,7 @@ namespace PDStat
 		{
 			using (PDStatContext db = new PDStatContext())
 			{
-				db.Songs.Remove(db.Songs.Where(s => s.Game == gamesBox.SelectedItem.ToString() && s.Mode == "Edit" && s.Title == existingEditSongs.SelectedItem.ToString()).First());
+				db.Songs.Remove(db.Songs.Where(s => s.Game == gamesBox.SelectedItem.ToString() && s.Mode == "Edit" && s.JPTitle == existingEditSongs.SelectedItem.ToString()).First());
 			}
 			LoadEditSongs();
 		}
@@ -70,7 +84,7 @@ namespace PDStat
 					List<string> editSongs = new List<string>();
 					try
 					{
-						editSongs = db.Songs.Where(s => s.Game == gamesBox.SelectedItem.ToString() && s.Mode == "Edit").OrderBy(s => s.Id).Select(s => s.Title).ToList();
+						editSongs = db.Songs.Where(s => s.Game == gamesBox.SelectedItem.ToString() && s.Mode == "Edit").OrderBy(s => s.Id).Select(s => s.JPTitle).ToList();
 						if (editSongs.Count > 0)
 						{
 							existingEditSongs.ItemsSource = editSongs;

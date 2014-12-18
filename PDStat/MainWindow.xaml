@@ -26,8 +26,9 @@
 		<Label x:Name="bestCT"    HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,262,0,0" VerticalAlignment="Top" FontSize="24" Width="145"/>
 		<Label x:Name="bestTZ1"   HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,304,0,0" VerticalAlignment="Top" FontSize="24" Width="145"/>
 		<Label x:Name="bestTZ2"   HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,346,0,0" VerticalAlignment="Top" FontSize="24" Width="145"/>
-		<Label x:Name="bestScore" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,395,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
-		<Label x:Name="bestRank"  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,443,0,0" VerticalAlignment="Top" FontSize="24" Width="145"/>
+		<Label x:Name="bestScore" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="230,388,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
+		<Label x:Name="bestRank"  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,430,0,0" VerticalAlignment="Top" FontSize="24" Width="145"/>
+		<Label x:Name="bestCombo" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="205,472,0,0" VerticalAlignment="Top" FontSize="24" Width="145"/>
 
 		<Label x:Name="coolLabel" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="355,52,0,0"  VerticalAlignment="Top" FontSize="24" Width="100"/>
 		<Label x:Name="goodLabel" Content=""  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="355,94,0,0"  VerticalAlignment="Top" FontSize="24" Width="100"/>
@@ -39,6 +40,7 @@
 		<Label Content="TZ2"   HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="355,346,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
 		<Label Content="Score" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="355,388,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
 		<Label Content="Rank"  HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="355,430,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
+		<Label Content="Combo" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="355,472,0,0" VerticalAlignment="Top" FontSize="24" Width="100"/>
 
 		<TextBox  x:Name="CoolBox"   HorizontalAlignment="Left" Height="32" Margin="512,59,0,0"  VerticalAlignment="Top" Width="75" HorizontalContentAlignment="Right" FontSize="20" UndoLimit="100" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
 		<TextBox  x:Name="GoodBox"   HorizontalAlignment="Left" Height="32" Margin="512,101,0,0"  VerticalAlignment="Top" Width="75" HorizontalContentAlignment="Right" FontSize="20" UndoLimit="100" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
@@ -50,8 +52,9 @@
 		<CheckBox x:Name="TZ2Chk"    HorizontalAlignment="Left" Height="13" Margin="542,360,0,0" VerticalAlignment="Top" Width="13" Grid.ColumnSpan="2"/>
 		<TextBox  x:Name="ScoreBox"  HorizontalAlignment="Left" Height="32" Margin="512,395,0,0" VerticalAlignment="Top" Width="75" HorizontalContentAlignment="Right" FontSize="20" UndoLimit="100" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
 		<ComboBox x:Name="rankBox"   HorizontalAlignment="Left" Margin="471,443,0,0" VerticalAlignment="Top" Width="150" Loaded="rankBox_Loaded" Grid.ColumnSpan="2"/>
-		<Button   x:Name="SubmitBtn" HorizontalAlignment="Left" Height="25" Margin="512,484,0,0" VerticalAlignment="Top" Width="75" Content="Submit" Click="SubmitBtn_Click" Grid.ColumnSpan="2"/>
-		<Button   x:Name="ResetBtn"  HorizontalAlignment="Left" Height="25" Margin="680,484,0,0" VerticalAlignment="Top" Width="75" Content="Reset" Click="ResetBtn_Click" IsEnabled="False" Grid.Column="1"/>
+		<TextBox  x:Name="comboBox"  HorizontalAlignment="Left" Height="32" Margin="512,480,0,0" VerticalAlignment="Top" Width="75" HorizontalContentAlignment="Right" FontSize="20" UndoLimit="100" VerticalContentAlignment="Center"/>
+		<Button   x:Name="SubmitBtn" HorizontalAlignment="Left" Height="25" Margin="515,539,0,0" VerticalAlignment="Top" Width="75" Content="Submit" Click="SubmitBtn_Click"/>
+		<Button   x:Name="ResetBtn"  HorizontalAlignment="Left" Height="25" Margin="683,539,0,0" VerticalAlignment="Top" Width="75" Content="Reset" Click="ResetBtn_Click" IsEnabled="False"/>
 
 	</Grid>
 </Window>
