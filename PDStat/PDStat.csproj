@@ -85,6 +85,10 @@
     <Reference Include="EntityFramework.SqlServerCompact">
       <HintPath>..\packages\EntityFramework.SqlServerCompact.6.1.1\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.7\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -165,6 +169,11 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Resources\PD1Songs.json" />
+    <None Include="Resources\PD2Songs.json" />
+    <None Include="Resources\PDF2Songs.json" />
+    <None Include="Resources\PDFSongs.json" />
+    <None Include="Resources\PDXSongs.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -176,11 +185,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\icon.ico" />
-    <EmbeddedResource Include="Resources\PDF2.txt" />
-    <EmbeddedResource Include="Resources\PDF.txt" />
-    <EmbeddedResource Include="Resources\PDX.txt" />
-    <EmbeddedResource Include="Resources\PD2.txt" />
-    <EmbeddedResource Include="Resources\PD1.txt" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

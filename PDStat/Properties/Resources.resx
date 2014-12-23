@@ -17959,55 +17959,19 @@
 </value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="PD1EN" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\pd1en.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="PD1Songs" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pd1songs.json;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="PD1JP" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\pd1jp.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="PD2Songs" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pd2songs.json;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="PD2EN" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\pd2en.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="PDF2Songs" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pdf2songs.json;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="PD2JP" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\pd2jp.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="PDFSongs" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pdfsongs.json;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="PDF2JP" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\pdf2jp.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="PDF2Loc" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\pdf2loc.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="PDFJP" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\pdfjp.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="PDFLoc" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\pdfloc.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="PDXEN" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\pdxen.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="PDXJP" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\pdxjp.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="PD1RO" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\pd1ro.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="PD2RO" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\pd2ro.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="PDF2EN" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\pdf2en.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="PDF2RO" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\pdf2ro.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="PDFEN" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\pdfen.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="PDFRO" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\pdfro.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="PDXRO" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\pdxro.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="PDXSongs" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pdxsongs.json;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
 </root>

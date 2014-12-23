@@ -1,0 +1,243 @@
+﻿[
+	{
+		"Mode": "Tutorial",
+		"JPTitle": "Ievan Polkka"
+	},
+	{
+		"Mode": "Tutorial",
+		"JPTitle": "Ievan Polkka (Extreme)"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "メルト",
+		"RomajiTitle": "Melt"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "アカツキアライヴァル",
+		"RomajiTitle": "Akatsuki Arrival",
+		"ENTitle": "Daybreak Arrival",
+		"LocalizedTitle": "Akatsuki Arrival"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "packaged",
+		"LocalizedTitle": "Packaged"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "Glory 3usi9"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "二息歩行",
+		"RomajiTitle": "Nisoku Hokou",
+		"ENTitle": "Two-Breaths Walking",
+		"LocalizedTitle": "Two Breaths Walking"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "番凩",
+		"RomajiTitle": "Tsugai Kogarashi",
+		"ENTitle": "Pair of Wintry Winds",
+		"LocalizedTitle": "Wintry Winds"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "スキキライ",
+		"RomajiTitle": "Suki, Kirai",
+		"ENTitle": "Like, Dislike",
+		"LocalizedTitle": "Love-Hate"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "クローバー♣クラブ",
+		"RomajiTitle": "Clover♣Club"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "ミラクルペイント",
+		"RomajiTitle": "Miracle Paint"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "指切り",
+		"RomajiTitle": "Yubikiri",
+		"ENTitle": "Pinky Promise",
+		"LocalizedTitle": "Pinky Swear"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "カラフル×メロディ",
+		"RomajiTitle": "Colorful x Melody"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "Blackjack"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "からくりピエロ",
+		"RomajiTitle": "Karakuri Pierrot",
+		"ENTitle": "Clown's Trick",
+		"LocalizedTitle": "Clockwork Clown"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "千年の独奏歌",
+		"RomajiTitle": "Sennen no Dokusou ka",
+		"ENTitle": "A Thousand Year Solo",
+		"LocalizedTitle": "Thousand Year Solo (DIVA Edit)"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "なりすましゲンガー",
+		"RomajiTitle": "Narisumashi Genga",
+		"ENTitle": "Doubleganger"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "炉心融解",
+		"RomajiTitle": "Roshin Yuukai",
+		"ENTitle": "Nuclear Reactor -Meltdown-",
+		"LocalizedTitle": "Roshin Yuukai"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "ルカルカ★ナイトフィーバー",
+		"RomajiTitle": "Luka Luka★Night Fever"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "Knife"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "桜ノ雨",
+		"RomajiTitle": "Sakura no Ame",
+		"ENTitle": "Rain of Cherry Blossoms",
+		"LocalizedTitle": "Sakura Rain"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "こちら、幸福安心委員会です。",
+		"RomajiTitle": "Kochira, Koufuku Anshin Iinkai desu.",
+		"ENTitle": "This Is The Happiness & Peace Of Mind Committee"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "カンタレラ ~grace edition~",
+		"RomajiTitle": "Cantarella ~grace edition~",
+		"LocalizedTitle": "Cantarella ~Grace Edition~"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "SPiCa -39's Giving Day Edition-"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "Hello, Worker"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "ロミオとシンデレラ",
+		"RomajiTitle": "Romeo to Cinderella",
+		"ENTitle": "Romeo and Cinderella"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "みくみくにしてあげる♪ (してやんよ)",
+		"RomajiTitle": "Miku Miku ni Shite Ageru♪ ()",
+		"ENTitle": "",
+		"LocalizedTitle": "I'll Miku-Miku You♪ (For Reals)"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "メテオ",
+		"RomajiTitle": "Meteor"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "ココロ",
+		"RomajiTitle": "Kokoro",
+		"ENTitle": "Heart"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "壊セ壊セ",
+		"RomajiTitle": "Kowase, Kowase",
+		"ENTitle": "Destroy, Destroy",
+		"LocalizedTitle": "Break It, Break It"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "soundless voice",
+		"LocalizedTitle": "Soundless Voice"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "結んで開いて羅刹と骸",
+		"RomajiTitle": "Musunde Hiraite Rasetsu to Mukuro",
+		"ENTitle": "Hold, Release; Rakshasa and Carcasses",
+		"LocalizedTitle": "Close and Open, Demons and The Dead"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "erase or zero",
+		"LocalizedTitle": "Erase or Zero"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "ダブルラリアット",
+		"RomajiTitle": "Double Lariat"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "パラジクロロベンゼン",
+		"RomajiTitle": "Paradichlorobenzene"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "カゲロウデイズ",
+		"RomajiTitle": "Kagerou Days",
+		"ENTitle": "Heat Haze Days",
+		"LocalizedTitle": "Kagerou Daze"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "裏表ラバーズ",
+		"RomajiTitle": "Ura-omote Lovers",
+		"ENTitle": "Two-Faced Lovers",
+		"LocalizedTitle": "Two-Sided Lovers"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "エンヴィキャットウォーク",
+		"RomajiTitle": "Envy Catwalk",
+		"LocalizedTitle": "Envy Cat Walk"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "ワールドイズマイン",
+		"RomajiTitle": "Waarudo Izu Main",
+		"ENTitle": "World Is Mine",
+		"LocalizedTitle": "The World Is Mine"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "DECORATOR"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "初音ミクの激唱",
+		"RomajiTitle": "Hatsune Miku no Gekishou",
+		"ENTitle": "The Intense Singing of Miku Hatsune",
+		"LocalizedTitle": "The Intense Voice of Hatsune Miku"
+	},
+	{
+		"Mode": "Default",
+		"JPTitle": "二次元ドリームフィーバー",
+		"RomajiTitle": "Nijigen Dream Fever",
+		"ENTitle": "2D Dream Fever"
+	}
+]

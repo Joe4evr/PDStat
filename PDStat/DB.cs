@@ -7,6 +7,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace PDStat
 {
@@ -284,149 +285,133 @@ namespace PDStat
 			});
 			#endregion
 
-			string def = "Default";
-			string tut = "Tutorial";
-			string ip = "Ievan Polkka";
-
 			int i = 0;
 
 			#region PD1
-			string[] pd1songsJP = PDStat.Properties.Resources.PD1JP.Split('\n');
-			string[] pd1songsRO = PDStat.Properties.Resources.PD1RO.Split('\n');
-			string[] pd1songsEN = PDStat.Properties.Resources.PD1EN.Split('\n');
-			for (int s = 0; s < pd1songsJP.Length; s++)
+            List<Song> pd1songs = JsonConvert.DeserializeObject<List<Song>>(PDStat.Properties.Resources.PD1Songs);
+			foreach (var song in pd1songs)
 			{
-				context.Songs.Add(new Song() {
-					Id = i++, 
-					Mode = def, 
-					Game = Helpers.PD1, 
-					JPTitle = pd1songsJP[s].Trim(), 
-					RomajiTitle = pd1songsRO[s].Trim(), 
-					ENTitle = pd1songsEN[s].Trim()
+                context.Songs.Add(new Song()
+                {
+                    Id = i++,
+                    Mode = song.Mode,
+					Game = Helpers.PD1,
+					JPTitle = song.JPTitle,
+					RomajiTitle = song.RomajiTitle,
+					ENTitle = song.ENTitle
 				});
-				context.Songs.Add(new Song() {
-					Id = i++, 
-					Mode = def, 
-					Game = Helpers.PDDT, 
-					JPTitle = pd1songsJP[s].Trim(), 
-					RomajiTitle = pd1songsRO[s].Trim(), 
-					ENTitle = pd1songsEN[s].Trim()
+                context.Songs.Add(new Song()
+                {
+                    Id = i++,
+                    Mode = song.Mode,
+                    Game = Helpers.PDDT,
+                    JPTitle = song.JPTitle,
+                    RomajiTitle = song.RomajiTitle,
+                    ENTitle = song.ENTitle
 				});
 			}
 			#endregion
 
-			#region PD2
-			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PD2, JPTitle = ip });
-			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDDT2, JPTitle = ip });
-			string[] pd2songsJP = PDStat.Properties.Resources.PD2JP.Split('\n');
-			string[] pd2songsRO = PDStat.Properties.Resources.PD2RO.Split('\n');
-			string[] pd2songsEN = PDStat.Properties.Resources.PD2EN.Split('\n');
-			for (int s = 0; s < pd2songsJP.Length; s++)
+            #region PD2
+            List<Song> pd2songs = JsonConvert.DeserializeObject<List<Song>>(PDStat.Properties.Resources.PD2Songs);
+            foreach (var song in pd2songs)
 			{
-				context.Songs.Add(new Song() {
-					Id = i++,
-					Mode = def,
-					Game = Helpers.PD2,
-					JPTitle = pd2songsJP[s].Trim(),
-					RomajiTitle = pd2songsRO[s].Trim(),
-					ENTitle = pd2songsEN[s].Trim()
+                context.Songs.Add(new Song()
+                {
+                    Id = i++,
+                    Mode = song.Mode,
+                    Game = Helpers.PD2,
+                    JPTitle = song.JPTitle,
+                    RomajiTitle = song.RomajiTitle,
+                    ENTitle = song.ENTitle
 				});
-				context.Songs.Add(new Song() {
-					Id = i++,
-					Mode = def,
-					Game = Helpers.PDDT2,
-					JPTitle = pd2songsJP[s].Trim(),
-					RomajiTitle = pd2songsRO[s].Trim(),
-					ENTitle = pd2songsEN[s].Trim()
+                context.Songs.Add(new Song()
+                {
+                    Id = i++,
+                    Mode = song.Mode,
+                    Game = Helpers.PDDT2,
+                    JPTitle = song.JPTitle,
+                    RomajiTitle = song.RomajiTitle,
+                    ENTitle = song.ENTitle
 				});
 			}
 			#endregion
-			
-			#region PDX
-			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDX, JPTitle = ip });
-			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDDTX, JPTitle = ip });
-			string[] pdXsongsJP = PDStat.Properties.Resources.PDXJP.Split('\n');
-			string[] pdXsongsRO = PDStat.Properties.Resources.PDXRO.Split('\n');
-			string[] pdXsongsEN = PDStat.Properties.Resources.PDXEN.Split('\n');
-			for (int s = 0; s < pdXsongsJP.Length; s++)
+
+            #region PDX
+            List<Song> pdXsongs = JsonConvert.DeserializeObject<List<Song>>(PDStat.Properties.Resources.PDXSongs);
+            foreach (var song in pdXsongs)
 			{
-				context.Songs.Add(new Song() {
-					Id = i++,
-					Mode = def,
-					Game = Helpers.PDX,
-					JPTitle = pdXsongsJP[s].Trim(),
-					RomajiTitle = pdXsongsRO[s].Trim(),
-					ENTitle = pdXsongsEN[s].Trim()
+                context.Songs.Add(new Song()
+                {
+                    Id = i++,
+                    Mode = song.Mode,
+                    Game = Helpers.PDX,
+                    JPTitle = song.JPTitle,
+                    RomajiTitle = song.RomajiTitle,
+                    ENTitle = song.ENTitle
 				});
-				context.Songs.Add(new Song() {
-					Id = i++,
-					Mode = def,
-					Game = Helpers.PDDTX,
-					JPTitle = pdXsongsJP[s].Trim(),
-					RomajiTitle = pdXsongsRO[s].Trim(),
-					ENTitle = pdXsongsEN[s].Trim()
+                context.Songs.Add(new Song()
+                {
+                    Id = i++,
+                    Mode = song.Mode,
+                    Game = Helpers.PDDTX,
+                    JPTitle = song.JPTitle,
+                    RomajiTitle = song.RomajiTitle,
+                    ENTitle = song.ENTitle
 				});
 			}
 			#endregion
-			
-			#region PDF
-			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDFV, JPTitle = ip });
-			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDFP, JPTitle = ip });
-			string[] pdFsongsJP = PDStat.Properties.Resources.PDFJP.Split('\n');
-			string[] pdFsongsRO = PDStat.Properties.Resources.PDFRO.Split('\n');
-			string[] pdFsongsEN = PDStat.Properties.Resources.PDFEN.Split('\n');
-			string[] pdFsongsLoc = PDStat.Properties.Resources.PDFLoc.Split('\n');
-			for (int s = 0; s < pdFsongsJP.Length; s++)
+
+            #region PDF
+            List<Song> pdFsongs = JsonConvert.DeserializeObject<List<Song>>(PDStat.Properties.Resources.PDFSongs);
+            foreach (var song in pdFsongs)
 			{
-				context.Songs.Add(new Song() {
-					Id = i++,
-					Mode = def,
+                context.Songs.Add(new Song()
+                {
+                    Id = i++,
+                    Mode = song.Mode,
 					Game = Helpers.PDFV,
-					JPTitle = pdFsongsJP[s].Trim(),
-					RomajiTitle = pdFsongsRO[s].Trim(),
-					ENTitle = pdFsongsEN[s].Trim(),
-					LocalizedTitle = pdFsongsLoc[s].Trim()
+                    JPTitle = song.JPTitle,
+                    RomajiTitle = song.RomajiTitle,
+                    ENTitle = song.ENTitle,
+					LocalizedTitle = song.LocalizedTitle
 				});
-				context.Songs.Add(new Song() {
-					Id = i++,
-					Mode = def,
+                context.Songs.Add(new Song()
+                {
+                    Id = i++,
+                    Mode = song.Mode,
 					Game = Helpers.PDFP,
-					JPTitle = pdFsongsJP[s].Trim(),
-					RomajiTitle = pdFsongsRO[s].Trim(),
-					ENTitle = pdFsongsEN[s].Trim(),
-					LocalizedTitle = pdFsongsLoc[s].Trim()
+                    JPTitle = song.JPTitle,
+                    RomajiTitle = song.RomajiTitle,
+                    ENTitle = song.ENTitle,
+                    LocalizedTitle = song.LocalizedTitle
 				});
 			}
 			#endregion
 
-			#region PDF2
-			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDF2V, JPTitle = ip });
-			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDF2P, JPTitle = ip });
-			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDF2V, JPTitle = ip + " (Extreme)" });
-			context.Songs.Add(new Song() { Id = i++, Mode = tut, Game = Helpers.PDF2P, JPTitle = ip + " (Extreme)" });
-			string[] pdF2songsJP = PDStat.Properties.Resources.PDF2JP.Split('\n');
-			string[] pdF2songsRO = PDStat.Properties.Resources.PDF2RO.Split('\n');
-			string[] pdF2songsEN = PDStat.Properties.Resources.PDF2EN.Split('\n');
-			string[] pdF2songsLoc = PDStat.Properties.Resources.PDF2Loc.Split('\n');
-			for (int s = 0; s < pdF2songsJP.Length; s++)
+            #region PDF2
+            List<Song> pdF2songs = JsonConvert.DeserializeObject<List<Song>>(PDStat.Properties.Resources.PDF2Songs);
+            foreach (var song in pdF2songs)
 			{
-				context.Songs.Add(new Song() {
-					Id = i++,
-					Mode = def,
+                context.Songs.Add(new Song()
+                {
+                    Id = i++,
+                    Mode = song.Mode,
 					Game = Helpers.PDF2V,
-					JPTitle = pdF2songsJP[s].Trim(),
-					RomajiTitle = pdF2songsRO[s].Trim(),
-					ENTitle = pdF2songsEN[s].Trim(),
-					LocalizedTitle = pdF2songsLoc[s].Trim()
+                    JPTitle = song.JPTitle,
+                    RomajiTitle = song.RomajiTitle,
+                    ENTitle = song.ENTitle,
+                    LocalizedTitle = song.LocalizedTitle
 				});
-				context.Songs.Add(new Song() {
-					Id = i++,
-					Mode = def,
+                context.Songs.Add(new Song()
+                {
+                    Id = i++,
+                    Mode = song.Mode,
 					Game = Helpers.PDF2P,
-					JPTitle = pdF2songsJP[s].Trim(),
-					RomajiTitle = pdF2songsRO[s].Trim(),
-					ENTitle = pdF2songsEN[s].Trim(),
-					LocalizedTitle = pdF2songsLoc[s].Trim()
+                    JPTitle = song.JPTitle,
+                    RomajiTitle = song.RomajiTitle,
+                    ENTitle = song.ENTitle,
+                    LocalizedTitle = song.LocalizedTitle
 				});
 			}
 			#endregion
