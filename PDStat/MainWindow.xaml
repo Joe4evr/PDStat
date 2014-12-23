@@ -54,7 +54,17 @@
 		<ComboBox x:Name="rankBox"   HorizontalAlignment="Left" Margin="471,443,0,0" VerticalAlignment="Top" Width="150" Loaded="rankBox_Loaded" Grid.ColumnSpan="2"/>
 		<TextBox  x:Name="comboBox"  HorizontalAlignment="Left" Height="32" Margin="512,480,0,0" VerticalAlignment="Top" Width="75" HorizontalContentAlignment="Right" FontSize="20" UndoLimit="100" VerticalContentAlignment="Center"/>
 		<Button   x:Name="SubmitBtn" HorizontalAlignment="Left" Height="25" Margin="515,539,0,0" VerticalAlignment="Top" Width="75" Content="Submit" Click="SubmitBtn_Click"/>
-		<Button   x:Name="ResetBtn"  HorizontalAlignment="Left" Height="25" Margin="683,539,0,0" VerticalAlignment="Top" Width="75" Content="Reset" Click="ResetBtn_Click" IsEnabled="False"/>
+        <Button   x:Name="ResetBtn"  HorizontalAlignment="Left" Height="25" Margin="683,539,0,0" VerticalAlignment="Top" Width="75" Content="Reset" Click="ResetBtn_Click" ToolTipService.InitialShowDelay="10">
+            <Button.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock FontWeight="Bold">Caution!</TextBlock>
+                        <TextBlock>This will submit a score of 0/0/0/0/0 and a Rank of "Unfinished"</TextBlock>
+                        <TextBlock FontWeight="Bold">Use only if you want to track how many times you've reset</TextBlock>
+                    </StackPanel>
+                </ToolTip>
+            </Button.ToolTip>
+        </Button>
 
-	</Grid>
+    </Grid>
 </Window>

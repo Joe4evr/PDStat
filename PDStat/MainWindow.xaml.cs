@@ -35,7 +35,7 @@ namespace PDStat
 		{
 			InitializeComponent();
 
-			//using (PDStatContext db = new PDStatContext()) { } //no-op for initializing
+			using (PDStatContext db = new PDStatContext()) { } //no-op for initializing
 		}
 
 		private async void gamesBox_Loaded(object sender, RoutedEventArgs e)
