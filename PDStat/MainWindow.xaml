@@ -60,7 +60,7 @@
                     <StackPanel>
                         <TextBlock FontWeight="Bold">Caution!</TextBlock>
                         <TextBlock>This will submit a score of 0/0/0/0/0 and a Rank of "Unfinished"</TextBlock>
-                        <TextBlock FontWeight="Bold">Use only if you want to track how many times you've reset</TextBlock>
+                        <TextBlock FontWeight="Bold">Use only if you want to track how many times you've reset a song</TextBlock>
                     </StackPanel>
                 </ToolTip>
             </Button.ToolTip>

@@ -130,6 +130,7 @@ namespace PDStat
 					TechZoneBonus2 = false,
 					Score = 0,
 					r = await (from ra in db.Ranks where ra.Name == "Unfinished" select ra).FirstAsync(),
+                    BestCombo = 0,
 				});
 				await db.SaveChangesAsync();
 			}
