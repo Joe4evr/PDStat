@@ -28,7 +28,7 @@ namespace PDStat
 
 		private void gamesBox_Loaded(object sender, RoutedEventArgs e)
 		{
-			gamesBox.ItemsSource = MainWindow.games;
+			gamesBox.ItemsSource = Helpers.games;
 			gamesBox.SelectedIndex = 0;
 		}
 

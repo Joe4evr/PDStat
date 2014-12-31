@@ -24,7 +24,6 @@ namespace PDStat
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		public static List<string> games = new List<string>();
 		Dictionary<string, int> songs;
 		List<string> diff;
 		Song currentSong;
@@ -38,16 +37,9 @@ namespace PDStat
 			using (PDStatContext db = new PDStatContext()) { } //no-op for initializing
 		}
 
-		private async void gamesBox_Loaded(object sender, RoutedEventArgs e)
+		private void gamesBox_Loaded(object sender, RoutedEventArgs e)
 		{
-			using (PDStatContext db = new PDStatContext())
-			{
-				foreach (var g in await db.Games.OrderBy(g => g.Id).ToListAsync())
-				{
-					games.Add(g.Name);
-				}
-			}
-			gamesBox.ItemsSource = games;
+			gamesBox.ItemsSource = Helpers.games;
 			gamesBox.SelectedIndex = 0;
 		}
 
@@ -114,8 +106,8 @@ namespace PDStat
 			{
 				db.PDStats.Add(new PdStat()
 				{
-                    s = await (from s in db.Songs where s.Id == currentSong.Id select s).SingleAsync(),
-                    diff = await (from d in db.Difficulties where d.Name == diffBox.SelectedItem.ToString() select d).SingleAsync(),
+					s = await (from s in db.Songs where s.Id == currentSong.Id select s).SingleAsync(),
+					diff = await (from d in db.Difficulties where d.Name == diffBox.SelectedItem.ToString() select d).SingleAsync(),
 					Attempt = currentAttempt,
 					Date = DateTime.Now,
 					Cool = 0,
@@ -127,7 +119,7 @@ namespace PDStat
 					TechZoneBonus1 = false,
 					TechZoneBonus2 = false,
 					Score = 0,
-                    r = await (from ra in db.Ranks where ra.Name == "Unfinished" select ra).SingleAsync(),
+					r = await (from ra in db.Ranks where ra.Name == "Unfinished" select ra).SingleAsync(),
                     BestCombo = 0,
 				});
 				await db.SaveChangesAsync();
@@ -154,7 +146,7 @@ namespace PDStat
 				{
 					CTChk.IsChecked = true;
 					TZ1Chk.IsChecked = true;
-					TZ2Chk.IsChecked = true;
+					TZ2Chk.IsChecked = true; //TODO: check for Easy
 				}
 				rankBox.SelectedItem = "Perfect";
 				comboBox.Text = (c + g).ToString();
@@ -261,9 +253,9 @@ namespace PDStat
 			{
 				using (PDStatContext db = new PDStatContext())
 				{
-                    int song;
-                    songs.TryGetValue(songBox.SelectedItem.ToString(), out song);
-                    currentSong = await (from s in db.Songs where s.Id == song select s).FirstAsync();
+					int song;
+					songs.TryGetValue(songBox.SelectedItem.ToString(), out song);
+					currentSong = await (from s in db.Songs where s.Id == song select s).FirstAsync();
 					PdStat stat = await (from st in db.PDStats where st.s.Id == currentSong.Id && st.Difficulty == diffBox.SelectedItem.ToString() select st).OrderByDescending(s => s.Score).FirstOrDefaultAsync();
 					
                     if (stat != null)
@@ -336,7 +328,7 @@ namespace PDStat
 				{
 					PdStat stat = db.PDStats.Add(new PdStat()
 					{
-                        s = await (from s in db.Songs where s.Id == currentSong.Id select s).SingleAsync(),
+						s = await (from s in db.Songs where s.Id == currentSong.Id select s).SingleAsync(),
 						diff = await (from d in db.Difficulties where d.Name == diffBox.SelectedItem.ToString() select d).SingleAsync(),
 						Attempt = currentAttempt,
 						Date = DateTime.Now,
@@ -349,7 +341,7 @@ namespace PDStat
 						TechZoneBonus1 = TZ1Chk.IsChecked ?? false,
 						TechZoneBonus2 = TZ2Chk.IsChecked ?? false,
 						Score = score,
-                        r = await (from ra in db.Ranks where ra.Name == rankBox.SelectedItem.ToString() select ra).SingleAsync(),
+						r = await (from ra in db.Ranks where ra.Name == rankBox.SelectedItem.ToString() select ra).SingleAsync(),
 						BestCombo = combo,
 					});
 

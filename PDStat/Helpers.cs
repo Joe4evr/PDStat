@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Reflection;
 
 namespace PDStat
 {
@@ -11,14 +9,16 @@ namespace PDStat
 		public const string PD2 = "Project Diva 2nd";
 		public const string PDX = "Project Diva Extend";
 
-		public const string PDDT = "Project Diva DT";
+		public const string PDDT  = "Project Diva DT";
 		public const string PDDT2 = "Project Diva DT 2nd";
 		public const string PDDTX = "Project Diva DT Extend";
 
-		public const string PDFV = "Project Diva f (Vita)";
-		public const string PDFP = "Project Diva F (PS3)";
+		public const string PDFV  = "Project Diva f (Vita)";
+		public const string PDFP  = "Project Diva F (PS3)";
 		public const string PDF2V = "Project Diva f 2nd (Vita)";
 		public const string PDF2P = "Project Diva F 2nd (PS3)";
+
+		public static List<string> games = new List<string>() { PD1, PD2, PDX, PDDT, PDDT2, PDDTX, PDFV, PDFP, PDF2V, PDF2P };
 
 		public static bool IsOfFFamily(string game)
 		{
