@@ -19,6 +19,7 @@ namespace PDStat
 		[StringLength(30)]
 		public string Game { get; set; }
 
+        [Required]
 		[StringLength(150)]
 		public string JPTitle { get; set; }
 
@@ -219,7 +220,7 @@ namespace PDStat
 	}
 
 	class DbInitializer
-#if (DEBUG)
+#if DEBUG
  : DropCreateDatabaseAlways<PDStatContext>
 #else
  : CreateDatabaseIfNotExists<PDStatContext>
@@ -291,7 +292,7 @@ namespace PDStat
             List<Song> pd1songs = JsonConvert.DeserializeObject<List<Song>>(PDStat.Properties.Resources.PD1Songs);
 			foreach (var song in pd1songs)
 			{
-                context.Songs.Add(new Song()
+                context.Songs.Add(new Song
                 {
                     Id = i++,
                     Mode = song.Mode,
@@ -300,7 +301,7 @@ namespace PDStat
 					RomajiTitle = song.RomajiTitle,
 					ENTitle = song.ENTitle
 				});
-                context.Songs.Add(new Song()
+                context.Songs.Add(new Song
                 {
                     Id = i++,
                     Mode = song.Mode,
@@ -316,7 +317,7 @@ namespace PDStat
             List<Song> pd2songs = JsonConvert.DeserializeObject<List<Song>>(PDStat.Properties.Resources.PD2Songs);
             foreach (var song in pd2songs)
 			{
-                context.Songs.Add(new Song()
+                context.Songs.Add(new Song
                 {
                     Id = i++,
                     Mode = song.Mode,
@@ -325,7 +326,7 @@ namespace PDStat
                     RomajiTitle = song.RomajiTitle,
                     ENTitle = song.ENTitle
 				});
-                context.Songs.Add(new Song()
+                context.Songs.Add(new Song
                 {
                     Id = i++,
                     Mode = song.Mode,
@@ -341,7 +342,7 @@ namespace PDStat
             List<Song> pdXsongs = JsonConvert.DeserializeObject<List<Song>>(PDStat.Properties.Resources.PDXSongs);
             foreach (var song in pdXsongs)
 			{
-                context.Songs.Add(new Song()
+                context.Songs.Add(new Song
                 {
                     Id = i++,
                     Mode = song.Mode,
@@ -350,7 +351,7 @@ namespace PDStat
                     RomajiTitle = song.RomajiTitle,
                     ENTitle = song.ENTitle
 				});
-                context.Songs.Add(new Song()
+                context.Songs.Add(new Song
                 {
                     Id = i++,
                     Mode = song.Mode,
@@ -366,7 +367,7 @@ namespace PDStat
             List<Song> pdFsongs = JsonConvert.DeserializeObject<List<Song>>(PDStat.Properties.Resources.PDFSongs);
             foreach (var song in pdFsongs)
 			{
-                context.Songs.Add(new Song()
+                context.Songs.Add(new Song
                 {
                     Id = i++,
                     Mode = song.Mode,
@@ -376,7 +377,7 @@ namespace PDStat
                     ENTitle = song.ENTitle,
 					LocalizedTitle = song.LocalizedTitle
 				});
-                context.Songs.Add(new Song()
+                context.Songs.Add(new Song
                 {
                     Id = i++,
                     Mode = song.Mode,
@@ -393,7 +394,7 @@ namespace PDStat
             List<Song> pdF2songs = JsonConvert.DeserializeObject<List<Song>>(PDStat.Properties.Resources.PDF2Songs);
             foreach (var song in pdF2songs)
 			{
-                context.Songs.Add(new Song()
+                context.Songs.Add(new Song
                 {
                     Id = i++,
                     Mode = song.Mode,
@@ -403,7 +404,7 @@ namespace PDStat
                     ENTitle = song.ENTitle,
                     LocalizedTitle = song.LocalizedTitle
 				});
-                context.Songs.Add(new Song()
+                context.Songs.Add(new Song
                 {
                     Id = i++,
                     Mode = song.Mode,

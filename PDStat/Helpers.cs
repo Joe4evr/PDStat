@@ -18,7 +18,7 @@ namespace PDStat
 		public const string PDF2V = "Project Diva f 2nd (Vita)";
 		public const string PDF2P = "Project Diva F 2nd (PS3)";
 
-		public static List<string> games = new List<string>() { PD1, PD2, PDX, PDDT, PDDT2, PDDTX, PDFV, PDFP, PDF2V, PDF2P };
+		public static List<string> games = new List<string> { PD1, PD2, PDX, PDDT, PDDT2, PDDTX, PDFV, PDFP, PDF2V, PDF2P };
 
 		public static bool IsOfFFamily(string game)
 		{
@@ -27,15 +27,15 @@ namespace PDStat
 
 		public static string GetBestName(Song s, ScoreStyle style)
 		{
-			if (!String.IsNullOrEmpty(s.LocalizedTitle) && style.Id >= 3)
+			if (!String.IsNullOrWhiteSpace(s.LocalizedTitle) && style.Id >= 3)
 			{
 				return s.LocalizedTitle;
 			}
-			else if (!String.IsNullOrEmpty(s.ENTitle) && style.Id >= 2)
+			else if (!String.IsNullOrWhiteSpace(s.ENTitle) && style.Id >= 2)
 			{
 				return s.ENTitle;
 			}
-			else if (!String.IsNullOrEmpty(s.RomajiTitle) && style.Id >= 1)
+			else if (!String.IsNullOrWhiteSpace(s.RomajiTitle) && style.Id >= 1)
 			{
 				return s.RomajiTitle;
 			}

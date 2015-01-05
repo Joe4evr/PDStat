@@ -39,13 +39,13 @@ namespace PDStat
 
 		private void addEditButton_Click(object sender, RoutedEventArgs e)
 		{
-			if (!String.IsNullOrEmpty(editTitleBox.Text))
+			if (!String.IsNullOrWhiteSpace(editTitleBox.Text))
 			{
 				using (PDStatContext db = new PDStatContext())
 				{
 					int i = db.Songs.OrderByDescending(s => s.Id).Select(s => s.Id).First();
-					Game G = db.Games.Where(s => s.Name == gamesBox.SelectedItem.ToString()).Select(s => s).First();
-					db.Songs.Add(new Song() { Id = i++, Mode = "Edit", g = G, JPTitle = editTitleBox.Text});
+					Game G = db.Games.Where(s => s.Name == gamesBox.SelectedItem.ToString()).Select(s => s).Single();
+					db.Songs.Add(new Song { Id = i++, Mode = "Edit", g = G, JPTitle = editTitleBox.Text});
 
 					try
 					{
