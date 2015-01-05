@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -16,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
+using Newtonsoft.Json;
 
 namespace PDStat
 {
@@ -34,7 +36,37 @@ namespace PDStat
 		{
 			InitializeComponent();
 
-			using (PDStatContext db = new PDStatContext()) { } //no-op for initializing
+			using (PDStatContext db = new PDStatContext())
+			{
+				List<Song> dlcSongs = JsonConvert.DeserializeObject<List<Song>>(File.ReadAllText("DLC.json"));
+				int id = (from i in db.Songs orderby i.Id descending select i.Id).First();
+				foreach (var song in dlcSongs)
+				{
+					Song compare = (from s in db.Songs where s.Game == song.Game where s.Mode == "Default" where s.JPTitle == song.JPTitle select s).FirstOrDefault();
+					if (compare == null)
+					{
+						db.Songs.Add(new Song
+						{
+							Id = id++,
+							Mode = "Default",
+							g = (from gm in db.Games where gm.Name == song.Game select gm).Single(),
+							JPTitle = song.JPTitle,
+							RomajiTitle = song.RomajiTitle,
+							ENTitle = song.ENTitle,
+							LocalizedTitle = song.LocalizedTitle
+						});
+						try
+						{
+							db.SaveChanges();
+						}
+						catch (DbEntityValidationException e)
+						{
+							
+							throw;
+						}
+					}
+				}
+			}
 		}
 
 		private void gamesBox_Loaded(object sender, RoutedEventArgs e)
@@ -102,30 +134,7 @@ namespace PDStat
 
 		private async void ResetBtn_Click(object sender, RoutedEventArgs e)
 		{
-			using (PDStatContext db = new PDStatContext())
-			{
-				db.PDStats.Add(new PdStat()
-				{
-					s = await (from s in db.Songs where s.Id == currentSong.Id select s).SingleAsync(),
-					diff = await (from d in db.Difficulties where d.Name == diffBox.SelectedItem.ToString() select d).SingleAsync(),
-					Attempt = currentAttempt,
-					Date = DateTime.Now,
-					Cool = 0,
-					Good = 0,
-					Safe = 0,
-					Bad = 0,
-					Awful = 0,
-					ChanceTimeBonus = false,
-					TechZoneBonus1 = false,
-					TechZoneBonus2 = false,
-					Score = 0,
-					r = await (from ra in db.Ranks where ra.Name == "Unfinished" select ra).SingleAsync(),
-                    BestCombo = 0,
-				});
-				await db.SaveChangesAsync();
-			}
-
-			IncrementAttempt(ref currentAttempt);
+			await SubmitEmptyScoreAsync();
 		}
 
 		private async void manageEdits_Click(object sender, RoutedEventArgs e)
@@ -146,7 +155,7 @@ namespace PDStat
 				{
 					CTChk.IsChecked = true;
 					TZ1Chk.IsChecked = true;
-					TZ2Chk.IsChecked = true; //TODO: check for Easy
+					TZ2Chk.IsChecked = !(diffBox.SelectedItem.ToString() == "Easy");
 				}
 				rankBox.SelectedItem = "Perfect";
 				comboBox.Text = (c + g).ToString();
@@ -155,7 +164,7 @@ namespace PDStat
 
 		private void debugLabel_Loaded(object sender, RoutedEventArgs e)
 		{
-#if (DEBUG)
+#if DEBUG
 			debugLabel.Content = "Debug";
 #endif
 		}
@@ -326,7 +335,7 @@ namespace PDStat
 			{
 				using (PDStatContext db = new PDStatContext())
 				{
-					PdStat stat = db.PDStats.Add(new PdStat()
+					PdStat stat = db.PDStats.Add(new PdStat
 					{
 						s = await (from s in db.Songs where s.Id == currentSong.Id select s).SingleAsync(),
 						diff = await (from d in db.Difficulties where d.Name == diffBox.SelectedItem.ToString() select d).SingleAsync(),
@@ -363,6 +372,34 @@ namespace PDStat
 				}
 			}
 			SubmitBtn.IsEnabled = true;
+		}
+
+		private async Task SubmitEmptyScoreAsync()
+		{
+			using (PDStatContext db = new PDStatContext())
+			{
+				db.PDStats.Add(new PdStat
+				{
+					s = await (from s in db.Songs where s.Id == currentSong.Id select s).SingleAsync(),
+					diff = await (from d in db.Difficulties where d.Name == diffBox.SelectedItem.ToString() select d).SingleAsync(),
+					Attempt = currentAttempt,
+					Date = DateTime.Now,
+					Cool = 0,
+					Good = 0,
+					Safe = 0,
+					Bad = 0,
+					Awful = 0,
+					ChanceTimeBonus = false,
+					TechZoneBonus1 = false,
+					TechZoneBonus2 = false,
+					Score = 0,
+					r = await (from ra in db.Ranks where ra.Name == "Unfinished" select ra).SingleAsync(),
+					BestCombo = 0,
+				});
+				await db.SaveChangesAsync();
+			}
+
+			IncrementAttempt(ref currentAttempt);
 		}
 
 		private async Task ReloadSongsAsync()

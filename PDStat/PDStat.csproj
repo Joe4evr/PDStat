@@ -171,6 +171,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <Content Include="DLC.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\PD1Songs.json" />
     <None Include="Resources\PD2Songs.json" />
     <None Include="Resources\PDF2Songs.json" />
